@@ -77,3 +77,11 @@ Feature: Evaluación API SUPER SIMPLE
         When method DELETE
         Then status 204
         And print response
+
+    @id:10 @EliminarPersonajeNoExiste
+    Scenario: T-API-001-CA10- Eliminar Personaje no existe
+        Given url base_url + '/testuser/api/characters/999'
+        When method DELETE
+        Then status 404
+        And print response
+
