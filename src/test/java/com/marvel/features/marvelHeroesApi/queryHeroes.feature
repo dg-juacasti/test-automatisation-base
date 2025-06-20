@@ -1,4 +1,4 @@
-    @REQ_HU-0001 @HU0001 @marvel_characters_query @marvel_characters_api @Agente2 @E2 @iniciativa_marvel
+@REQ_HU-0001 @HU0001 @marvel_characters_query @marvel_characters_api @Agente2 @E2 @iniciativa_marvel
 Feature: HU-0001 Marvel Characters Query (microservicio para consulta de personajes)
 
   Background:
