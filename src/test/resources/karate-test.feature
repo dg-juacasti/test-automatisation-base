@@ -43,3 +43,12 @@ Feature: Evaluación API SUPER SIMPLE
         When method POST
         Then status 400
         And print response
+
+    @id:6 @CrearPersonajeFaltaDatos
+    Scenario: T-API-001-CA06- Crear Personaje Json falta datos
+        Given url base_url + '/testuser/api/characters'
+        And def personajeJson = read('classpath:../faltaDatos.json')
+        And request personajeJson
+        When method POST
+        Then status 400
+        And print response
