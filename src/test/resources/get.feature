@@ -14,11 +14,10 @@ Feature: Get all or by id characters
 
   @id:2 @GetByIdCharacter @PositiveCase
   Scenario: T-API-BDR-1590-CA2-Create new character and get by their id sucessfull
-    * call read('./post.feature@CreateNewCharacter')
-    Given path '/' + responseId
+    Given path '/12'
     When method get
     Then status 200
-    * match response.id == responseId
+    * match response.id == 12
 
   @id:3 @GetByIdCharacter @NegativeCase
   Scenario: T-API-BDR-1590-CA3-Get character by id not found

@@ -1,6 +1,6 @@
 {
-  "name": "Scarlet Witch",
-  "alterego": "Wanda Maximoff",
-  "description": "Hechicera poderosa con habilidades de manipulación de la realidad",
-  "powers": ["Magia del caos", "Telequinesis", "Manipulación mental", "Vuelo"]
+  "name": "Doctor Strange",
+  "alterego": "Stephen Strange",
+  "description": "Hechicero Supremo y maestro de las artes místicas",
+  "powers": ["Magia", "Manipulación del tiempo", "Teletransportación", "Proyección astral"]
 }

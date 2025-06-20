@@ -7,7 +7,7 @@ Feature: Delete character
 
   @id:1 @DeleteNotExistingCharacter @PositiveCase
   Scenario: T-API-BDR-1590-CA9-Delete existing character
-    Given path '/4'
+    Given path '/11'
     When method delete
     Then status 204
 
@@ -16,5 +16,5 @@ Feature: Delete character
     Given path '/999'
     When method delete
     Then status 404
-    * def resposenseMessage = response.error
-    * match resposenseMessage == 'Character not found'
+    * def responseError = response.error
+    * match responseError == 'Character not found'
