@@ -2,13 +2,18 @@
 Feature: TEST-2006 Gestión de personajes de Marvel (microservicio para administrar personajes de Marvel)
 
   Background:
+    * configure ssl = true
     * url port_marvel_characters_api
     * path '/' + marvel_username + '/api/characters'
     * def generarHeaders =
       """
       function() {
       return {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Host": "bp-se-test-cabcd9b246a5.herokuapp.com",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Connection": "keep-alive"
       };
       }
       """
@@ -25,6 +30,7 @@ Feature: TEST-2006 Gestión de personajes de Marvel (microservicio para administ
       }
       """
     * def characterData = {}
+    * def sharedData = {}
 
   @id:1 @obtenerPersonajes @solicitudExitosa200
   Scenario: T-API-TEST-2006-CA01-Obtener todos los personajes 200 - karate
@@ -51,9 +57,9 @@ Feature: TEST-2006 Gestión de personajes de Marvel (microservicio para administ
     And request jsonData
     When method POST
     Then status 201
-    # And match response.id != null
-    # And match response.name == jsonData.name
-    
+    And match response.id != null
+    And match response.name == jsonData.name
+    * set sharedData.id = response.id
 
   @id:4 @obtenerPersonaje @solicitudExitosa200
   Scenario: T-API-TEST-2006-CA02-Obtener personaje por ID 200 - karate
@@ -76,12 +82,11 @@ Feature: TEST-2006 Gestión de personajes de Marvel (microservicio para administ
 
   @id:6 @actualizarPersonaje @solicitudExitosa200
   Scenario: T-API-TEST-2006-CA07-Actualizar personaje existente 200 - karate
-    * def jsonData = karate.get('characterData')
+    * def jsonData = read('classpath:data/marvel_characters_api/character_valid.json')
+    * def nombrePersonaje = generarNombreAleatorio()
+    * set jsonData.name = nombrePersonaje
     * set jsonData.description = 'Updated description for ' + jsonData.name
-    Given path '/' + jsonData.id
-    * print '=== PATH ===>', '/' + jsonData.id
-    * print '=== ID DEL PERSONAJE ===>', jsonData.id
-    * print '=== OBJETO COMPLETO ===>', jsonData
+    * path '/' + sharedData.id
     And request jsonData
     When method PUT
     Then status 200
@@ -110,8 +115,7 @@ Feature: TEST-2006 Gestión de personajes de Marvel (microservicio para administ
 
   @id:9 @eliminarPersonaje @solicitudExitosa204
   Scenario: T-API-TEST-2006-CA09-Eliminar personaje existente 204 - karate
-    * def jsonData = karate.get('characterData')
-    * path '/' + jsonData.id
+    * path '/' + sharedData.id
     When method DELETE
     Then status 204
   # And match response == ''
@@ -127,9 +131,10 @@ Feature: TEST-2006 Gestión de personajes de Marvel (microservicio para administ
 
   @id:11 @errorServicio500
   Scenario: T-API-TEST-2006-CA11-Error interno del servidor 500 - karate
-    * def invalidData = '{"invalidField": true}'
-    And request invalidData
-    When method POST
+    * def jsonData = read('classpath:data/marvel_characters_api/character_valid.json')
+    * path '/undefined'
+    And request jsonData
+    When method PUT
     Then status 500
 # And match response.error contains 'Internal server error'
 # And match response.status == 500
