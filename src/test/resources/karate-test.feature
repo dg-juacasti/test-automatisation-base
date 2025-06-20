@@ -53,3 +53,11 @@ Feature: Evaluación API SUPER SIMPLE
         Then status 400
         And print response
 
+    @id:7 @ActualizarDatosPersonaje
+    Scenario: T-API-001-CA07- Actualizar datos de personaje
+        Given url base_url + '/testuser/api/characters/16'
+        And def personajeJson = read('classpath:../personaje.json')
+        And request personajeJson
+        When method PUT
+        Then status 200
+        And print response
