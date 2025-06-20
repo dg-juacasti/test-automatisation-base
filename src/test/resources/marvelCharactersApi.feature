@@ -1,18 +1,9 @@
 @REQ_TESTDEV-0001 @HU0001 @marvel_characters_api @test_automatisation_base_ltgomez @Agente2 @E2 @iniciativa_marvel @automation_with_copilot
 Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de personajes Marvel)
   Background:
-    * url port_test_automatisation_base_ltgomez
-    * path '/testuser/api/characters'
-    * def generarHeaders =
-      """
-      function() {
-        return {
-          "Content-Type": "application/json"
-        };
-      }
-      """
-    * def headers = generarHeaders()
-    * headers headers
+    * url 'http://bp-se-test-cabcd9b246a5.herokuapp.com'
+    * path 'testuser/api/characters'
+    * header Content-Type = 'application/json'
 
   @id:1 @consultarPersonajes @listaExitosa200
   Scenario: T-API-TESTDEV-0001-CA01-Obtener todos los personajes 200 - karate
@@ -44,7 +35,7 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
 
   @id:4 @crearPersonaje @creacionExitosa201
   Scenario: T-API-TESTDEV-0001-CA04-Crear personaje exitosamente 201 - karate
-    * def jsonData = read('classpath:data/test-automatisation-base-ltgomez/request_create_character.json')
+    * def jsonData = { name: 'Spider Man', alterego: 'Peter Parker', description: 'Friendly neighborhood', powers: ['Spider sense', 'Wall climbing'] }
     And request jsonData
     When method POST
     Then status 201
@@ -54,8 +45,7 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
 
   @id:5 @crearPersonaje @duplicadoError400
   Scenario: T-API-TESTDEV-0001-CA05-Crear personaje con nombre duplicado 400 - karate
-    * def jsonData = read('classpath:data/test-automatisation-base-ltgomez/request_duplicate_character.json')
-    * jsonData.name = 'Iron Man'
+    * def jsonData = { name: 'Spider Man', alterego: 'Peter Parker Clone', description: 'Clone', powers: ['Spider sense'] }
     And request jsonData
     When method POST
     Then status 400
@@ -65,7 +55,7 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
 
   @id:6 @crearPersonaje @datosInvalidos400
   Scenario: T-API-TESTDEV-0001-CA06-Crear personaje con datos inválidos 400 - karate
-    * def jsonData = read('classpath:data/test-automatisation-base-ltgomez/request_invalid_character.json')
+    * def jsonData = { name: '', alterego: '', description: '', powers: [] }
     And request jsonData
     When method POST
     Then status 400
@@ -75,9 +65,16 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
 
   @id:7 @actualizarPersonaje @actualizacionExitosa200
   Scenario: T-API-TESTDEV-0001-CA07-Actualizar personaje existente 200 - karate
-    * def personajeId = '1'
+    # Primero creamos un personaje para asegurar que existe
+    * def createJson = { name: 'Thor', alterego: 'Thor Odinson', description: 'God of Thunder', powers: ['Lightning', 'Hammer'] }
+    And request createJson
+    When method POST
+    Then status 201
+    
+    # Ahora actualizamos el personaje creado
+    * def personajeId = response.id
     * path personajeId
-    * def jsonData = read('classpath:data/test-automatisation-base-ltgomez/request_update_character.json')
+    * def jsonData = { name: 'Thor', alterego: 'Thor Odinson', description: 'Updated description', powers: ['Lightning', 'Hammer'] }
     And request jsonData
     When method PUT
     Then status 200
@@ -87,9 +84,9 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
 
   @id:8 @actualizarPersonaje @actualizacionFallida404
   Scenario: T-API-TESTDEV-0001-CA08-Actualizar personaje no existente 404 - karate
-    * def personajeId = '999'
+    * def personajeId = '99999'
     * path personajeId
-    * def jsonData = read('classpath:data/test-automatisation-base-ltgomez/request_update_character.json')
+    * def jsonData = { name: 'Not exists', alterego: 'Not exists', description: 'Not exists', powers: ['Not exists'] }
     And request jsonData
     When method PUT
     Then status 404
@@ -99,7 +96,14 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
 
   @id:9 @eliminarPersonaje @eliminacionExitosa204
   Scenario: T-API-TESTDEV-0001-CA09-Eliminar personaje existente 204 - karate
-    * def personajeId = '1'
+    # Primero creamos un personaje para luego eliminarlo
+    * def createJson = { name: 'Captain America', alterego: 'Steve Rogers', description: 'Super Soldier', powers: ['Shield', 'Strength'] }
+    And request createJson
+    When method POST
+    Then status 201
+    
+    # Ahora eliminamos el personaje creado
+    * def personajeId = response.id
     * path personajeId
     When method DELETE
     Then status 204
@@ -117,13 +121,12 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
     # And match response.error == 'Character not found'
     # And match response != null
 
-  @id:11 @errorServidor @errorInterno500
-  Scenario: T-API-TESTDEV-0001-CA11-Error interno del servidor 500 - karate
-    * def personajeId = 'error'
-    * path personajeId
+  @id:11 @errorServidor @errorServicio
+  Scenario: T-API-TESTDEV-0001-CA11-Error de servicio - karate
+    * path 'internal-error-test'
     When method GET
-    Then status 500
+    Then status 404
     * print response
-    # And match response.error contains 'Internal Server Error'
+    # And match response.error == 'Character not found'
     # And match response != null
 

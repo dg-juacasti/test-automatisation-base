@@ -12,6 +12,7 @@ class KarateBasicTest {
 
     @Karate.Test
     Karate testMarvelApi() {
-        return Karate.run("classpath:com/pichincha/features/marvelCharactersApi.feature");
+        return Karate.run("classpath:marvelCharactersApi.feature");
     }
+
 }

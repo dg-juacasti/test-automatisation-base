@@ -12,19 +12,17 @@ public class TestRunner {
 
     @Karate.Test
     Karate testAllFeatures() {
-        return Karate.run("classpath:com/pichincha/features/marvelCharactersApi.feature");
+        return Karate.run().relativeTo(getClass());
     }
     
     @Karate.Test
     Karate testConsultarPersonajes() {
-        return Karate.run("classpath:com/pichincha/features/marvelCharactersApi.feature")
-                .tags("@consultarPersonajes");
+        return Karate.run("marvelCharactersApi.feature").tags("@consultarPersonajes").relativeTo(getClass());
     }
     
     @Karate.Test
     Karate testCrearPersonaje() {
-        return Karate.run("classpath:com/pichincha/features/marvelCharactersApi.feature")
-                .tags("@crearPersonaje");
+        return Karate.run("marvelCharactersApi.feature").tags("@crearPersonaje").relativeTo(getClass());
     }
 }
 
