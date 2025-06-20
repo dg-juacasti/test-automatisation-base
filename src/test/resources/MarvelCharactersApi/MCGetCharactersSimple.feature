@@ -5,8 +5,8 @@
 Feature: Validar estructura básica de personajes
 
 Background:
-  * def baseUrl = 'http://bp-se-test-cabcd9b246a5.herokuapp.com'
-  * def testUser = 'testuser'
+  * def baseUrl = karate.get('baseUrl')
+  * def testUser = karate.get('testUser')
   * def endpoint = baseUrl + '/' + testUser + '/api/characters'
 
 Scenario: Obtener personajes y validar estructura básica
