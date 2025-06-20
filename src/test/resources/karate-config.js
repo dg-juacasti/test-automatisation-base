@@ -6,11 +6,12 @@ function fn() {
   if (!env) {
     env = 'dev';
   }
-  
-  // Configuración base para todos los entornos
+    // Configuración base que será usada por todos los ambientes
   var config = {
-    // URL base para todos los microservicios
-    baseUrl: 'http://localhost:8080',
+    env: env,
+    // URL base para la Marvel Characters API
+    baseUrl: 'http://bp-se-test-cabcd9b246a5.herokuapp.com',
+    username: 'testuser',
     
     // Función de utilidad para generar nombres aleatorios
     randomString: function() {
@@ -20,24 +21,28 @@ function fn() {
     // Función para crear nombres únicos con prefijo
     uniqueName: function(prefix) {
       return prefix + '-' + java.util.UUID.randomUUID();
-    }
+    },
+    
+    // Timeout para peticiones HTTP (en milisegundos)
+    readTimeout: 60000,
+    connectTimeout: 60000,
+    
+    // Configuración para manejo de errores
+    retryCount: 3,
+    retryInterval: 5000
   };
-  
-  // URLs para todos los microservicios (nombrados con formato port_nombre_microservicio)
-  config.port_marvel_characters_api = 'http://bp-se-test-cabcd9b246a5.herokuapp.com';
-    // Configuraciones específicas para cada ambiente
+  // Configuraciones específicas para cada ambiente
   if (env === 'dev') {
     // Ambiente de desarrollo (puede apuntar a servicios locales o de dev)
-    config.baseUrl = 'https://bp-se-test-cabcd9b246a5.herokuapp.com';
+    config.baseUrl = 'http://bp-se-test-cabcd9b246a5.herokuapp.com';
   } else if (env === 'qa') {
     // Ambiente de QA
-    config.baseUrl = 'https://bp-se-qa-cabcd9b246a5.herokuapp.com';
-  } else if (env === 'staging') {
+    config.baseUrl = 'http://bp-se-qa-cabcd9b246a5.herokuapp.com';  } else if (env === 'staging') {
     // Ambiente de staging/preproducción
-    config.baseUrl = 'https://bp-se-staging-cabcd9b246a5.herokuapp.com';
+    config.baseUrl = 'http://bp-se-staging-cabcd9b246a5.herokuapp.com';
   } else if (env === 'prod') {
     // Ambiente de producción
-    config.baseUrl = 'https://bp-se-prod-cabcd9b246a5.herokuapp.com';
+    config.baseUrl = 'http://bp-se-prod-cabcd9b246a5.herokuapp.com';
   } else if (env === 'local') {
     // Ambiente local (para pruebas con servidor local o mockado)
     config.baseUrl = 'http://localhost:8080';
@@ -46,8 +51,8 @@ function fn() {
     config.baseUrl = 'http://localhost:8080/mock';
     config.isMockEnabled = true;
   }
-    // Activar SSL para todos los entornos
-  karate.configure('ssl', true);
+  // Desactivar SSL ya que usamos HTTP
+  karate.configure('ssl', false);
   
   // Configurar timeouts globales para todas las peticiones
   karate.configure('readTimeout', config.readTimeout);

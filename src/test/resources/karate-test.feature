@@ -1,10 +1,14 @@
 Feature: Marvel Characters API Tests
 
 Background:
-  # La configuración base se carga automáticamente desde karate-config.js
+  # Carga de archivos de configuración y datos
+  * def config = read('classpath:data/config.json')[0]
+  * def baseUrl = config.baseUrl
+  * def username = config.username
   * url baseUrl + '/' + username + '/api/characters'
-  
-  # Carga de datos de prueba desde archivos JSON
+  # Desactivamos SSL porque la API usa HTTP, no HTTPS
+  * configure ssl = false
+    # Carga de datos de prueba desde archivos JSON
   * def schemas = read('classpath:data/schemas.json')
   * def characterSchema = schemas.characterSchema
   * def ironManData = read('classpath:data/ironman.json')
@@ -13,6 +17,9 @@ Background:
   * def hulkData = read('classpath:data/hulk.json')
   * def captainAmericaData = read('classpath:data/captain-america.json')
   * def invalidCharacter = read('classpath:data/invalid-character.json')
+    # Definimos variables para los personajes - creamos copias profundas
+  * def ironMan = read('classpath:data/ironman.json')
+  * def spiderMan = read('classpath:data/spiderman.json')
   
   # Función para generar strings aleatorios y evitar duplicados
   * def randomString = function(){ return java.util.UUID.randomUUID() + '' }
@@ -53,7 +60,7 @@ Scenario: Obtener un personaje que no existe
 # 4. Crear un personaje exitosamente
 Scenario: Crear un personaje exitosamente
   # Preparar datos para evitar duplicados
-  * def hero = copy(ironManData)
+  * def hero = read('classpath:data/ironman.json')
   * set hero.name = uniqueName('Iron Man')
   
   Given path ''
