@@ -25,3 +25,9 @@ Scenario: Validar tipos de propiedades en personajes
   Then status 200
   And match response != null
   And match each response contains { id: '#number', name: '#string', alterego: '#string', description: '#string' }
+
+Scenario: Validar poderes de personajes opcionales
+  Given url endpoint
+  When method GET
+  Then status 200
+  And match each response == '#? !_.powers || _.powers instanceof Array'
