@@ -1,4 +1,4 @@
-# Proyecto base de pruebas automatizadas con Karate, Java y Gradle
+# Proyecto base de pruebas automatizadas con Karate, Java y Gradle realizado por Marvin Garcia, celula identidades, CoE Seguridad maragarc@pichincha.com
 
 Este proyecto es una base para implementar pruebas automatizadas de la colección de peticiones entregadas (por ejemplo, una colección Postman). Todas las pruebas deben ser escritas en el archivo `src/test/resources/karate-test.feature` siguiendo la sintaxis de Karate DSL.
 
