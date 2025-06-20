@@ -7,21 +7,12 @@ Feature: Prueba de eliminación de caracter
     # Cargar generador
     * def characterGen = call read('classpath:utils/character-generator.js')
 
-    # Generar personaje dinámico para CRUD usando la función cargada
-    * def testCharacter = characterGen.generateCharacterWithName('CRUD-Test')
-
-    * print 'Generated test character:', testCharacter
-
   @id:1 @eliminarCaracterOk
   Scenario: T-API-HU-0004-CA01- Eliminación de caracter exitoso
     # Creamos un caracter previamente para validar la eliminación y asegurar uno existente
-    * def characterId = null
-    Given url fullUrl
-    And request testCharacter
-    When method post
-    Then status 201
-    * def characterId = response.id
-    * print 'Created character:', response
+    * def createdCharacter = call read('classpath:utils/create-character.feature')
+    * def characterId = createdCharacter.characterId
+    * print 'Created character:', createdCharacter.createdCharacter
     # Eliminamos el caracter previamente creado
     Given url fullUrl + '/' + characterId
     When method delete

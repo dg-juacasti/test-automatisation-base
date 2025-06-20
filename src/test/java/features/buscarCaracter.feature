@@ -3,13 +3,6 @@ Feature: Prueba de busqueda de caracter
   Background:
     * def config = call read('classpath:karate-config.js')
     * def fullUrl = config.baseUrl
-    # Cargar generador
-    * def characterGen = call read('classpath:utils/character-generator.js')
-
-    # Generar personaje dinámico para CRUD usando la función cargada
-    * def testCharacter = characterGen.generateCharacterWithName('CRUD-Test')
-
-    * print 'Generated test character:', testCharacter
 
   @id:1 @buscarTodosCaracteres
   Scenario: T-API-HU-0002-CA01- Busqueda de todos los caracteres ( Sin params )
@@ -23,20 +16,16 @@ Feature: Prueba de busqueda de caracter
   @id:2 @buscarCaracterPorId
   Scenario: T-API-HU-0002-CA02- Busqueda de caracter por ID de caracter existente
    # Creamos caracter para una correcta validación de un caracter existente y sus datos
-    * def characterId = null
-    Given url fullUrl
-    And request testCharacter
-    When method post
-    Then status 201
-    * def characterId = response.id
+    * def createdCharacter = call read('classpath:utils/create-character.feature')
+    * def characterId = createdCharacter.characterId
     # Realizamos la peticion buscando el caracter
     Given url fullUrl + "/" + characterId
     When method get
     Then status 200
     And match response == '#object'
-    And match response.name == testCharacter.name
-    And match response.alterego == testCharacter.alterego
-    And match response.powers == testCharacter.powers
+    And match response.name == createdCharacter.createdCharacter.name
+    And match response.alterego == createdCharacter.createdCharacter.alterego
+    And match response.powers == createdCharacter.createdCharacter.powers
     And match response.id == '#number'
     * print 'Find character:', response
 
