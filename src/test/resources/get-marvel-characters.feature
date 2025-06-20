@@ -1,23 +1,22 @@
-Feature: Pruebas de API para personajes
+Feature: API tests for characters
 
   Background:
     * configure ssl = true
     * url 'http://bp-se-test-cabcd9b246a5.herokuapp.com'
 
-  Scenario: Verificar que el endpoint /jgusnay/api/characters responde 200
+  Scenario: Verify that the /jgusnay/api/characters endpoint returns 200
     Given path 'jgusnay/api/characters'
     When method get
     Then status 200
 
-  Scenario: Verificar estructura de personajes
+  Scenario: Validate character structure
     Given path 'jgusnay/api/characters'
     When method get
     Then status 200
     * def personajes = response
     * match each personajes == { id: '#number', name: '#string', alterego: '#string', description: '#string', powers: '#[]' }
 
-
-  Scenario: Validar que un personaje tiene al menos 2 poderes
+  Scenario: Validate that a character has at least 2 powers
     Given path 'jgusnay/api/characters'
     When method get
     Then status 200
@@ -25,7 +24,7 @@ Feature: Pruebas de API para personajes
     * def conMuchosPoderes = karate.filter(personajes, function(p) { return p.powers.length >= 2 })
     * assert conMuchosPoderes.length > 0
 
-  Scenario: Obtener personaje existente por ID
+  Scenario: Retrieve existing character by ID
     Given path 'jgusnay/api/characters/1'
     When method get
     Then status 200
@@ -40,7 +39,7 @@ Feature: Pruebas de API para personajes
     }
     """
 
-  Scenario: Obtener personaje que no existe
+  Scenario: Retrieve character that does not exist
     Given path 'jgusnay/api/characters/9999'
     When method get
     Then status 404
