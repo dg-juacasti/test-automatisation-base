@@ -1,35 +1,71 @@
-# Proyecto base de pruebas automatizadas con Karate, Java y Gradle
+# Pruebas Automatizadas de la API Marvel Characters
 
-Este proyecto es una base para implementar pruebas automatizadas de la colección de peticiones entregadas (por ejemplo, una colección Postman). Todas las pruebas deben ser escritas en el archivo `src/test/resources/karate-test.feature` siguiendo la sintaxis de Karate DSL.
+Este proyecto contiene pruebas automatizadas usando Karate Framework para la API REST de personajes Marvel.
 
-## Instrucciones de uso
+## Estructura del Proyecto
 
-### 1. Descarga del proyecto
-
-Clona este repositorio en tu máquina local:
-
-```sh
-git clone https://github.com/dg-juacasti/test-automatisation-base
-cd karate-test
+```
+src/
+  test/
+    java/
+      helpers/
+        DataGenerator.java        # Clase para generar datos aleatorios
+      KarateBasicTest.java        # Clase que ejecuta las pruebas
+    resources/
+      karate-config.js            # Configuración de Karate
+      marvel/
+        get.feature               # Pruebas de operaciones GET
+        post.feature              # Pruebas de operaciones POST
+        put.feature               # Pruebas de operaciones PUT
+        delete.feature            # Pruebas de operaciones DELETE
+        flow.feature              # Pruebas de flujo completo CRUD
 ```
 
-### 2. Escribe tus pruebas
+## Casos de Prueba Implementados
 
-- Implementa los escenarios de prueba en el archivo:
-  - `src/test/resources/karate-test.feature`
-- Usa la sintaxis de Karate para definir los escenarios y validaciones.
+1. **Operaciones GET**
+   - Obtener todos los personajes
+   - Obtener un personaje por ID (existente)
+   - Obtener un personaje por ID (no existente)
 
-### 3. Ejecuta las pruebas
+2. **Operaciones POST**
+   - Crear un personaje exitosamente
+   - Intentar crear un personaje con nombre duplicado
+   - Intentar crear un personaje con campos requeridos faltantes
 
-Asegúrate de tener Java 17, 18 o 21 instalado y activo. Luego ejecuta:
+3. **Operaciones PUT**
+   - Actualizar un personaje exitosamente
+   - Intentar actualizar un personaje que no existe
 
-```sh
-./gradlew test o gradlew test
+4. **Operaciones DELETE**
+   - Eliminar un personaje exitosamente
+   - Intentar eliminar un personaje que no existe
+
+5. **Flujo Completo**
+   - Crear, obtener, actualizar y eliminar un personaje en un flujo completo
+
+## Cómo Ejecutar las Pruebas
+
+### Usando Gradle
+
+```bash
+./gradlew test
 ```
 
-Esto compilará el proyecto y ejecutará todas las pruebas automatizadas.
+### Desde un IDE
 
----
+Ejecuta la clase `KarateBasicTest.java` como una prueba JUnit.
 
-- Si tienes problemas de SSL, puedes agregar la línea `* configure ssl = true` en el `Background` de tu archivo `.feature`.
-- Los reportes de ejecución se generarán en la carpeta `karate-reports/`.
+## Características
+
+- **Datos Aleatorios**: Todas las pruebas utilizan datos aleatorios para evitar colisiones
+- **Validación Completa**: Se validan todos los campos y formatos de respuesta
+- **Pruebas Independientes**: Cada prueba crea sus propios datos para asegurar independencia
+- **Escenarios Completos**: Se cubren tanto casos exitosos como de error
+
+## Tecnologías Utilizadas
+
+- Java 17
+- Karate Framework 1.4.1
+- JUnit 5
+- Gradle
