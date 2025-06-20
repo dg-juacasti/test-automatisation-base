@@ -49,3 +49,26 @@ Scenario: Intentar crear personaje con nombre duplicado
     error: 'Character name already exists'
   }
   """
+Scenario: Validar errores al enviar personaje con campos vacíos
+  * def emptyPayload =
+  """
+  {
+    "name": "",
+    "alterego": "",
+    "description": "",
+    "powers": []
+  }
+  """
+  Given url endpoint
+  And request emptyPayload
+  When method POST
+  Then status 400
+  And match response ==
+  """
+  {
+    name: "Name is required",
+    description: "Description is required",
+    powers: "Powers are required",
+    alterego: "Alterego is required"
+  }
+  """
