@@ -1,0 +1,9 @@
+{
+  "characterSchema": {
+    "id": "#number",
+    "name": "#string",
+    "alterego": "#string",
+    "description": "#string",
+    "powers": "#array"
+  }
+}
