@@ -70,3 +70,10 @@ Feature: Evaluación API SUPER SIMPLE
         When method PUT
         Then status 404
         And print response
+
+    @id:9 @EliminarPersonaje
+    Scenario: T-API-001-CA09- Eliminar Personaje
+        Given url base_url + '/testuser/api/characters/28'
+        When method DELETE
+        Then status 204
+        And print response
