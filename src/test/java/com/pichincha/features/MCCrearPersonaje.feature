@@ -3,6 +3,7 @@ Feature: Crear Personaje
 
   Background:
     * configure ssl = true
+    * header Content-Type = 'application/json'
     * def baseUrl = 'http://bp-se-test-cabcd9b246a5.herokuapp.com/testuser/api/characters'
     * def character = read('classpath:../MarvelCharacters/CrearPersonaje.json')
 
@@ -14,12 +15,18 @@ Feature: Crear Personaje
     When method post
     Then status 201
     And match response.alterego == "Edu Lima"
+    And def createdCharacterId = response.id
     And print response
+  # Eliminar personaje creado para mantener el estado limpio
+    Given url baseUrl + '/' + createdCharacterId
+    When method delete
+    Then status 204
 
   @id:2 @MarvelCharactersAPI  @CrearPersonajeNombreDuplicado
   Scenario: T-API-UH-0003-CA2 Crear personaje (nombre duplicado)
     Given url baseUrl
-    And request character
+    And def characterDuplicateName = read('classpath:../MarvelCharacters/CrearPersonajeNombreDuplicado.json')
+    And request characterDuplicateName
     When method post
     Then status 400
     And match response.error == "Character name already exists"
