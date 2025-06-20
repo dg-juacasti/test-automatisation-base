@@ -18,7 +18,7 @@ Feature: Obtener personaje por ID
 @id:2 @MarvelCharactersAPI  @ObtenerPersonajePorIdNoexiste
   Scenario: T-API-BAN-0002-CA2 Obtener personaje por ID (no existe)
     Given url baseUrl
-    And path '999'
+    And path '99999'
     When method get
     Then status 404
     And match response.error == "Character not found"
