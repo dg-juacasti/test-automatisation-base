@@ -31,8 +31,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Ejecutar Pruebas y Generar Reporte
-        # La opción --continue asegura que todas las pruebas se ejecuten y los reportes se generen incluso si hay fallos.
-        run: ./gradlew generateKarateReport --continue
+        run: ./gradlew test --continue
 
       - name: Subir Reportes de Karate
         if: always()
