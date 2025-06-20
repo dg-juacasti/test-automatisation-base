@@ -1,0 +1,6 @@
+{
+  "name": "Hulk",
+  "alterego": "Bruce Banner",
+  "description": "Scientist transformed by gamma radiation",
+  "powers": ["Super Strength", "Regeneration", "Invulnerability"]
+}
