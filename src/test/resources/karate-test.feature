@@ -107,3 +107,23 @@ Feature: Test de API de marvel characters
     And match response.description ==  'Dev full stack'
     And match response.powers contains 'Angular'
     And match response.alterego == 'Super Banco'
+
+  @id:8 @ActualizarPersonajeNoExiste
+  Scenario: T-API-BIL-1-CA8-Actualizar personaje (no existe)
+    * def path = '/arevelo/api/characters'
+    * def idPersonaje = 400
+    * header Content-Type = 'application/json'
+    Given url baseUrl + path + '/' + idPersonaje
+    And request
+     """
+      {
+        "name": "Iron Man",
+        "alterego": "xxx",
+        "description": "xxx",
+        "powers": ["xxx"]
+      }
+      """
+    When method PUT
+    Then status 404
+    * print response
+    And match response.error == 'Character not found'
