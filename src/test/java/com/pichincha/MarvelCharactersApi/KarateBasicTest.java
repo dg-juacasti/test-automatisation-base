@@ -11,9 +11,15 @@ class KarateBasicTest {
 //        return Karate.run().relativeTo(getClass());
 //        return Karate.run("classpath:karate-test.feature");
 //        return Karate.run("get-characters").relativeTo(getClass());
-//        return Karate.run("classpath:MarvelCharactersApi/MCGetCharacters.feature"); //OK
 //        return Karate.run("classpath:MarvelCharactersApi/MCPostNewCharacter.feature"); //OK
-        return Karate.run("classpath:MarvelCharactersApi/MCPutUpdateCharacter.feature"); //OK
+//        return Karate.run("classpath:MarvelCharactersApi/MCGetCharacters.feature"); //OK
+//        return Karate.run("classpath:MarvelCharactersApi/MCPutUpdateCharacter.feature"); //OK
+//        return Karate.run("classpath:MarvelCharactersApi/MCDeleteCharacter.feature"); //OK
+
+//        Ejecutar tests en orden con Karate usando un test suite
+            return Karate.run("classpath:MarvelCharactersApi/MasterSuite.feature");
+
+
 
     }
 

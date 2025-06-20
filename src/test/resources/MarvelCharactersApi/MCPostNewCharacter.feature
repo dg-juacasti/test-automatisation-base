@@ -9,21 +9,33 @@ Background:
   * def baseUrl = karate.get('baseUrl')
   * def testUser = karate.get('testUser')
   * def endpoint = baseUrl + '/' + testUser + '/api/characters'
+  * def duplicatedCharacter =
+  """
+  {
+    "name": "Iron Man",
+    "alterego": "Tony Stark",
+    "description": "Genius billionaire",
+    "powers": ["Armor", "Flight"]
+  }
+  """
+  * def uniqueName = 'Iron Man ' + new Date().getTime()
   * def characterPayload =
   """
   {
-    "name": "Iron Maan",
+    "name": "#(uniqueName)",
     "alterego": "Tony Stark",
     "description": "Genius billionaire",
     "powers": ["Armor", "Flight"]
   }
   """
 
-Scenario: Crear personaje exitosamente
+Scenario: PostCharacterSuccessfullyCreatesNewCharacter
   Given url endpoint
   And request characterPayload
   When method POST
   Then status 201
+   * def createdId = response.id
+   * def uniqueName = response.name
   And match response ==
   """
   {
@@ -34,13 +46,37 @@ Scenario: Crear personaje exitosamente
     powers: '#[]'
   }
   """
-  And match response.name == characterPayload.name
+  And match response.name == uniqueName
   And match response.powers contains 'Armor'
   And match response.powers contains 'Flight'
 
-Scenario: Intentar crear personaje con nombre duplicado
+  # Crear el objeto que quieres guardar
+  * def objToSave = { id: #(createdId), name: #(uniqueName) }
+  * print objToSave
+  * print "VERIFICADO"
+  # Función para escribir archivo JSON sin cambiar triples comillas ni formato
+  * def writeToFile =
+  """
+  function(obj, path) {
+    var Files = Java.type('java.nio.file.Files');
+    var Paths = Java.type('java.nio.file.Paths');
+    var StandardCharsets = Java.type('java.nio.charset.StandardCharsets');
+    var json = JSON.stringify(obj, null, 2);
+    var filePath = Paths.get(path);
+    if (!Files.exists(filePath.getParent())) {
+      Files.createDirectories(filePath.getParent());
+    }
+    Files.write(filePath, json.getBytes(StandardCharsets.UTF_8));
+  }
+  """
+
+  # Ejecutar escritura en 'target/character.json'
+  * eval writeToFile(objToSave, 'target/character.json')
+
+
+Scenario: PostCharacterFailsWithDuplicateName
   Given url endpoint
-  And request characterPayload
+  And request duplicatedCharacter
   When method POST
   Then status 400
   And match response ==
@@ -49,7 +85,7 @@ Scenario: Intentar crear personaje con nombre duplicado
     error: 'Character name already exists'
   }
   """
-Scenario: Validar errores al enviar personaje con campos vacíos
+Scenario: PostCharacterFailsWithEmptyRequiredFields
   * def emptyPayload =
   """
   {
