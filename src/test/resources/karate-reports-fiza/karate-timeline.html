@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Karate Timeline</title>
+    <style>
+      body, html { font-family: arial, sans-serif; font-size: 11pt; }
+      #visualization { box-sizing: border-box; width: 100%; height: 300px; }
+      .vis-item.failed { background-color: #F2928C; }
+      .page-heading { padding: 0.5em; margin-bottom: 0.5em; background-color: lightcyan; border: 1px solid gray; }
+    </style>
+    <script src="res/vis.min.js"></script>
+    <link href="res/vis.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="page-heading">
+      <a href="karate-summary.html">Summary</a>
+    </div>     
+    <div id="visualization"></div>
+    <script>
+var groups = [{"content":"Test worker","id":1}];
+var items = [{"id":1,"group":1,"content":"karate-test[1:11]","start":1750436636837,"end":1750436637727,"title":"karate-test[1:11] 11:23:56.837-11:23:57.727 T-MIC-TEST-CHAPTER-2025-CA1-Obtener todos los personajes"},{"id":2,"group":1,"content":"karate-test[2:18]","start":1750436637745,"end":1750436637964,"title":"karate-test[2:18] 11:23:57.745-11:23:57.964 T-MIC-TEST-CHAPTER-2025-CA2-Obtener personaje por ID"},{"id":3,"group":1,"content":"karate-test[3:26]","start":1750436637980,"end":1750436638303,"title":"karate-test[3:26] 11:23:57.980-11:23:58.303 T-MIC-TEST-CHAPTER-2025-CA3-Crear personaje (válido)"},{"id":4,"group":1,"content":"karate-test[4:37]","start":1750436638312,"end":1750436638552,"title":"karate-test[4:37] 11:23:58.312-11:23:58.552 T-MIC-TEST-CHAPTER-2025-CA4-Crear personaje (nombre duplicado, error 400)"},{"id":5,"group":1,"content":"karate-test[5:48]","start":1750436638560,"end":1750436638794,"title":"karate-test[5:48] 11:23:58.560-11:23:58.794 T-MIC-TEST-CHAPTER-2025-CA5-Crear personaje (datos inválidos, error 400)"},{"id":6,"group":1,"content":"karate-test[6:66]","start":1750436638804,"end":1750436639021,"title":"karate-test[6:66] 11:23:58.804-11:23:59.021 T-MIC-TEST-CHAPTER-2025-CA6-Obtener personaje inexistente (error 404)"},{"id":7,"group":1,"content":"karate-test[7:76]","start":1750436639032,"end":1750436639255,"title":"karate-test[7:76] 11:23:59.032-11:23:59.255 T-MIC-TEST-CHAPTER-2025-CA7-Actualizar personaje (válido)"},{"id":8,"group":1,"content":"karate-test[8:91]","start":1750436639264,"end":1750436639483,"title":"karate-test[8:91] 11:23:59.264-11:23:59.483 T-MIC-TEST-CHAPTER-2025-CA8-Actualizar personaje inexistente (error 404)"},{"id":9,"group":1,"content":"karate-test[9:106]","start":1750436639491,"end":1750436639707,"title":"karate-test[9:106] 11:23:59.491-11:23:59.707 T-MIC-TEST-CHAPTER-2025-CA9-Eliminar personaje (válido)"},{"id":10,"group":1,"content":"karate-test[10:115]","start":1750436639716,"end":1750436639930,"title":"karate-test[10:115] 11:23:59.716-11:23:59.930 T-MIC-TEST-CHAPTER-2025-CA10-Eliminar personaje inexistente (error 404)"}];
+</script>
+    <script>
+      var container = document.getElementById('visualization');
+      var timeline = new vis.Timeline(container);
+      timeline.setOptions({groupOrder: 'content'});
+      timeline.setGroups(new vis.DataSet(groups));
+      timeline.setItems(new vis.DataSet(items));
+    </script>
+  </body>
+</html>
