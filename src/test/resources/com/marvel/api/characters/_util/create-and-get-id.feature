@@ -1,3 +1,4 @@
+@ignore
 Feature: Utilidad para crear un personaje y devolver su respuesta
 
   Background:

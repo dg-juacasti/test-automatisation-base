@@ -1,3 +1,4 @@
+@ignore
 Feature: Utilidad para eliminar un personaje por su ID
 
   Background:
