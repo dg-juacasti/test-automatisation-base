@@ -9,7 +9,14 @@ Background:
   * def testUser = karate.get('testUser')
   * def endpoint = baseUrl + '/' + testUser + '/api/characters'
 
-Scenario: Obtener personajes y validar estructura básica
+  # Leer el personaje creado desde archivo JSON
+  * def fs = Java.type('java.nio.file.Files')
+  * def path = Java.type('java.nio.file.Paths').get('target/character.json')
+  * def characterInfo = JSON.parse(fs.readString(path))
+  * def createdId = characterInfo.id
+  * def createdName = characterInfo.name
+
+Scenario: Obtener lista de personajes y validar estructura básica
   Given url endpoint
   When method GET
   Then status 200
@@ -31,3 +38,40 @@ Scenario: Validar poderes de personajes opcionales
   When method GET
   Then status 200
   And match each response == '#? !_.powers || _.powers instanceof Array'
+
+Scenario: Validar que personaje creado esté presente en la lista
+  * def fs = Java.type('java.nio.file.Files')
+  * def path = Java.type('java.nio.file.Paths').get('target/character.json')
+  * def characterInfo = JSON.parse(fs.readString(path))
+
+  Given url endpoint
+  When method GET
+  Then status 200
+
+  # Crear un objeto esperado para buscarlo en la lista
+  * def expectedCharacter = {}
+  * expectedCharacter.name = characterInfo.name
+  * expectedCharacter.id = '#number'
+  * expectedCharacter.alterego = '#string'
+  * expectedCharacter.description = '#string'
+  * expectedCharacter.powers = '#[]'
+
+  * match response contains expectedCharacter
+
+  # Verificar que al menos uno en la respuesta coincida con los valores
+  * match response contains expectedCharacter
+
+Scenario: Error Obtener personaje inexistente debe retornar error 404
+  * def characterId = 999
+  * def endpoint = baseUrl + '/' + testUser + '/api/characters/' + characterId
+
+  Given url endpoint
+  When method GET
+  Then status 404
+  And match response ==
+    """
+    {
+      error: "Character not found"
+    }
+    """
+
