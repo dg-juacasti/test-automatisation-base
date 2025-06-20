@@ -1,0 +1,18 @@
+{
+  "characterSchema": {
+    "id": "#number",
+    "name": "#string",
+    "alterego": "#string",
+    "description": "#string",
+    "powers": "#array"
+  },
+  "errorSchema": {
+    "error": "#string"
+  },
+  "validationErrorSchema": {
+    "name": "##string",
+    "alterego": "##string",
+    "description": "##string",
+    "powers": "##string"
+  }
+}

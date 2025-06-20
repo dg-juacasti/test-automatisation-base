@@ -1,0 +1,14 @@
+{
+  "duplicateName": {
+    "error": "Character name already exists"
+  },
+  "notFound": {
+    "error": "Character not found"
+  },
+  "validation": {
+    "name": "Name is required",
+    "alterego": "Alterego is required", 
+    "description": "Description is required",
+    "powers": "Powers are required"
+  }
+}

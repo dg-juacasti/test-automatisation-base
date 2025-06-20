@@ -1,0 +1,9 @@
+{
+  "baseUrl": "http://bp-se-test-cabcd9b246a5.herokuapp.com",
+  "username": "testuser",
+  "ssl": true,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "timeoutMs": 5000
+}
