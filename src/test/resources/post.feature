@@ -1,41 +1,33 @@
-@REQ_BDR-1590 @GetCharactersV1
-Feature: Get all or by id characters
+@REQ_BDR-1590 @CreateNewCharacterV1
+Feature: Create new character
 
   Background:
-    * def baseUrl = 'http://bp-se-test-cabcd9b246a5.herokuapp.com/bapinos/api/characters'
     * url baseUrl
     * def requestBody = read('classpath:../data/request.json')
     * def badRequest = read('classpath:../data/badRequest.json')
 
-  @id:1 @PostNewCharacter @PositiveCase
+  @id:1 @CreateNewCharacter @PositiveCase
   Scenario: T-API-BDR-1590-CA4-Save new character sucessfull
-    Given url baseUrl
     And request requestBody
     When method post
     Then status 201
-    * def response = response
     * print 'Response: ' + response
+    * match response contains { id: '#number', name: '#string', alterego: '#string', description: '#string', powers: '#[]' }
 
-  @id:2 @PostDuplicateCharacter @DuplicatedCase
-  Scenario: T-API-BDR-1590-CA5-Save new character sucessfull
-    Given url baseUrl
+  @id:2 @CreateDuplicateCharacter @DuplicatedCase
+  Scenario: T-API-BDR-1590-CA5-Save new character error for duplicated
     And request requestBody
     When method post
     Then status 400
-    * def resposenseMessage = response.error
-    * match resposenseMessage == 'Character name already exists'
+    * def responseError = response.error
+    * match responseError == 'Character name already exists'
 
-  @id:3 @PostEmptyFieldsCharacter @EmptyFieldsdCase
-  Scenario: T-API-BDR-1590-CA6-Save new character sucessfull
-    Given url baseUrl
+  @id:3 @CreateCharacterBadData @ErroDataCase
+  Scenario: T-API-BDR-1590-CA6-Save new character error for data
     And request badRequest
     When method post
     Then status 400
-    * def name = response.name
-    * def description = response.description
-    * def powers = response.powers
-    * def alterego = response.alterego
-    * match name  == 'Name is required'
-    * match description  == 'Description is required'
-    * match powers  == 'Powers are required'
-    * match alterego  == 'Alterego is required'
+    * match response.name == 'Name is required'
+    * match response.description == 'Description is required'
+    * match response.powers == 'Powers are required'
+    * match response.alterego == 'Alterego is required'
