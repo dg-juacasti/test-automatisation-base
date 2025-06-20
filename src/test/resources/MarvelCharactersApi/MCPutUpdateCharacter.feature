@@ -27,7 +27,7 @@ Background:
     }
     """
 
-Scenario: Actualizar personaje existente correctamente
+Scenario:  UpdateSuccessfullyExistingCharacterWithTimestampedDescription
   Given url baseUrl + '/' + testUser + '/api/characters/' + validId
   And request updatePayload
   When method PUT
@@ -38,7 +38,7 @@ Scenario: Actualizar personaje existente correctamente
   And match response.alterego == 'Tony Stark'
   And match response.powers == ["Armor", "Flight"]
 
-Scenario: Intentar actualizar personaje inexistente
+Scenario: UpdateFailNonExistentCharacter
   Given url baseUrl + '/' + testUser + '/api/characters/' + invalidId
   And request updatePayload
   When method PUT

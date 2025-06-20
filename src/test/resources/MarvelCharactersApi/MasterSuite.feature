@@ -1,6 +1,6 @@
 Feature: Master suite para correr tests en secuencia
 
-Scenario: Ejecutar tests en orden
+Scenario: ExecuteAllTestsInSequentiallyDefinedOrder
 
   * call read('classpath:MarvelCharactersApi/MCPostNewCharacter.feature')
   * call read('classpath:MarvelCharactersApi/MCGetCharacters.feature')

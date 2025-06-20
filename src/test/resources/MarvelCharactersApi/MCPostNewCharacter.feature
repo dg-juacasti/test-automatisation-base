@@ -29,7 +29,7 @@ Background:
   }
   """
 
-Scenario: Crear personaje exitosamente
+Scenario: PostCharacterSuccessfullyCreatesNewCharacter
   Given url endpoint
   And request characterPayload
   When method POST
@@ -74,7 +74,7 @@ Scenario: Crear personaje exitosamente
   * eval writeToFile(objToSave, 'target/character.json')
 
 
-Scenario: Intentar crear personaje con nombre duplicado
+Scenario: PostCharacterFailsWithDuplicateName
   Given url endpoint
   And request duplicatedCharacter
   When method POST
@@ -85,7 +85,7 @@ Scenario: Intentar crear personaje con nombre duplicado
     error: 'Character name already exists'
   }
   """
-Scenario: Validar errores al enviar personaje con campos vacíos
+Scenario: PostCharacterFailsWithEmptyRequiredFields
   * def emptyPayload =
   """
   {

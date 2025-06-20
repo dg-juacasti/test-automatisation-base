@@ -8,10 +8,21 @@ Feature: Eliminar personaje de la API de personajes
 Background:
   * def baseUrl = karate.get('baseUrl')
   * def testUser = karate.get('testUser')
-  * def validId = 2
+
+  # Leer id válido desde el JSON generado previamente
+  * def fs = Java.type('java.nio.file.Files')
+  * def path = Java.type('java.nio.file.Paths').get('target/character.json')
+  * def characterInfo = JSON.parse(fs.readString(path))
+  * def validId = characterInfo.id
   * def invalidId = 999
 
-Scenario: Eliminar personaje inexistente devuelve 404
+Scenario: DeleteCharacterSuccessfullyReturns204NoContent
+  Given url baseUrl + '/' + testUser + '/api/characters/' + validId
+  When method DELETE
+  Then status 204
+  And match response == ''
+
+Scenario: DeleteCharacterFailsWhenNonExistentReturns404Error
   Given url baseUrl + '/' + testUser + '/api/characters/' + invalidId
   When method DELETE
   Then status 404
@@ -21,9 +32,3 @@ Scenario: Eliminar personaje inexistente devuelve 404
     error: "Character not found"
   }
   """
-
-Scenario: Eliminar personaje existente devuelve 204 sin contenido
-  Given url baseUrl + '/' + testUser + '/api/characters/' + validId
-  When method DELETE
-  Then status 204
-  And match response == ''

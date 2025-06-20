@@ -16,7 +16,7 @@ Background:
   * def createdId = characterInfo.id
   * def createdName = characterInfo.name
 
-Scenario: Obtener lista de personajes y validar estructura básica
+Scenario: GetCharacterValidateBasicStructureOfCharacterList
   Given url endpoint
   When method GET
   Then status 200
@@ -26,20 +26,20 @@ Scenario: Obtener lista de personajes y validar estructura básica
   And match each response contains { name: '#string' }
   And match each response contains { alterego: '#string' }
 
-Scenario: Validar tipos de propiedades en personajes
+Scenario: GetCharacterValidateCharacterPropertiesTypes
   Given url endpoint
   When method GET
   Then status 200
   And match response != null
   And match each response contains { id: '#number', name: '#string', alterego: '#string', description: '#string' }
 
-Scenario: Validar poderes de personajes opcionales
+Scenario: GetCharacterValidateOptionalPowers
   Given url endpoint
   When method GET
   Then status 200
   And match each response == '#? !_.powers || _.powers instanceof Array'
 
-Scenario: Validar que personaje creado esté presente en la lista
+Scenario: GetCharacterVerifyCreatedCharacterIsPresentInList
   Given url endpoint
   When method GET
   Then status 200
@@ -56,7 +56,7 @@ Scenario: Validar que personaje creado esté presente en la lista
     """
   * match response contains expectedCharacter
 
-Scenario: Error Obtener personaje inexistente debe retornar error 404
+Scenario: GetErrorFailToGetNonExistentCharacterReturns404Error
   * def characterId = 999
   * def endpoint = baseUrl + '/' + testUser + '/api/characters/' + characterId
 
@@ -70,7 +70,7 @@ Scenario: Error Obtener personaje inexistente debe retornar error 404
     }
     """
 
-Scenario: Obtener personaje existente por ID 3 exitosamente
+Scenario: GetExistingCharacterById3Successfully
   * def characterId = 3
   * def endpoint = baseUrl + '/' + testUser + '/api/characters/' + characterId
 
@@ -89,7 +89,7 @@ Scenario: Obtener personaje existente por ID 3 exitosamente
     """
   And match response.name == "Iron Man"
 
-Scenario: Obtener personaje existente por ID dinámico (personaje creado en MCPostNewCharacter.feature)
+Scenario: GetExistingCharacterByDynamicIdCreatedInMCPostNewCharacterFeature
   * def characterId = characterInfo.id
   * def endpoint = baseUrl + '/' + testUser + '/api/characters/' + characterId
 
