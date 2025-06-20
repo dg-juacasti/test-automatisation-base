@@ -9,10 +9,20 @@ Background:
   * def baseUrl = karate.get('baseUrl')
   * def testUser = karate.get('testUser')
   * def endpoint = baseUrl + '/' + testUser + '/api/characters'
+  * def duplicatedCharacter =
+  """
+  {
+    "name": "Iron Man",
+    "alterego": "Tony Stark",
+    "description": "Genius billionaire",
+    "powers": ["Armor", "Flight"]
+  }
+  """
+  * def uniqueName = 'Iron Man ' + new Date().getTime()
   * def characterPayload =
   """
   {
-    "name": "Iron Maan",
+    "name": "#(uniqueName)",
     "alterego": "Tony Stark",
     "description": "Genius billionaire",
     "powers": ["Armor", "Flight"]
@@ -24,6 +34,8 @@ Scenario: Crear personaje exitosamente
   And request characterPayload
   When method POST
   Then status 201
+   * def createdId = response.id
+   * def uniqueName = response.name
   And match response ==
   """
   {
@@ -34,13 +46,13 @@ Scenario: Crear personaje exitosamente
     powers: '#[]'
   }
   """
-  And match response.name == characterPayload.name
+  And match response.name == uniqueName
   And match response.powers contains 'Armor'
   And match response.powers contains 'Flight'
 
 Scenario: Intentar crear personaje con nombre duplicado
   Given url endpoint
-  And request characterPayload
+  And request duplicatedCharacter
   When method POST
   Then status 400
   And match response ==
