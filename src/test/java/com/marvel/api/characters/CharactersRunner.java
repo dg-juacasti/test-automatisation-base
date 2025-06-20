@@ -2,7 +2,7 @@ package com.marvel.api.characters;
 
 import com.intuit.karate.junit5.Karate;
 
-class TestRunner {
+class CharactersRunner {
 
     @Karate.Test
     Karate testAll() {
