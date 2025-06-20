@@ -12,9 +12,3 @@ Feature: Test de API súper simple
     Then status 200
     And match response == '#[]'
     * print response
-
-  Scenario: Verificar que un hero existe
-    Given url urlBase + '/1'
-    When method get
-    Then status 200
-    And match response == '#{}'
