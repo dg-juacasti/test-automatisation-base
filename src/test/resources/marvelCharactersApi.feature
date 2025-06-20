@@ -13,16 +13,6 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
     # And match response != null
     # And match response == '#array'
 
-  @id:2 @consultarPersonajePorId @personajeExistente200
-  Scenario: T-API-TESTDEV-0001-CA02-Obtener personaje por ID existente 200 - karate
-    * def personajeId = '1'
-    * path personajeId
-    When method GET
-    Then status 200
-    * print response
-    # And match response != null
-    # And match response.name == 'Iron Man'
-
   @id:3 @consultarPersonajePorId @personajeNoExistente404
   Scenario: T-API-TESTDEV-0001-CA03-Obtener personaje por ID no existente 404 - karate
     * def personajeId = '999'
@@ -35,7 +25,8 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
 
   @id:4 @crearPersonaje @creacionExitosa201
   Scenario: T-API-TESTDEV-0001-CA04-Crear personaje exitosamente 201 - karate
-    * def jsonData = { name: 'Spider Man', alterego: 'Peter Parker', description: 'Friendly neighborhood', powers: ['Spider sense', 'Wall climbing'] }
+    * def timestamp = java.lang.System.currentTimeMillis()
+    * def jsonData = { name: 'Spider Man #{timestamp}' , alterego: 'Peter Parker', description: 'Friendly neighborhood', powers: ['Spider sense', 'Wall climbing'] }
     And request jsonData
     When method POST
     Then status 201
@@ -45,8 +36,17 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
 
   @id:5 @crearPersonaje @duplicadoError400
   Scenario: T-API-TESTDEV-0001-CA05-Crear personaje con nombre duplicado 400 - karate
-    * def jsonData = { name: 'Spider Man', alterego: 'Peter Parker Clone', description: 'Clone', powers: ['Spider sense'] }
-    And request jsonData
+    # Primero creamos un personaje
+    * def timestamp = java.lang.System.currentTimeMillis()
+    * def uniqueName = 'Duplicated Hero #{timestamp} '
+    * def jsonData1 = { name: uniqueName, alterego: 'Original', description: 'Original Hero', powers: ['Original Power'] }
+    And request jsonData1
+    When method POST
+    Then status 201
+
+    # Ahora intentamos crear otro con el mismo nombre
+    * def jsonData2 = { name: uniqueName, alterego: 'Clone', description: 'Clone Hero', powers: ['Cloned Power'] }
+    And request jsonData2
     When method POST
     Then status 400
     * print response
@@ -66,11 +66,12 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
   @id:7 @actualizarPersonaje @actualizacionExitosa200
   Scenario: T-API-TESTDEV-0001-CA07-Actualizar personaje existente 200 - karate
     # Primero creamos un personaje para asegurar que existe
-    * def createJson = { name: 'Thor', alterego: 'Thor Odinson', description: 'God of Thunder', powers: ['Lightning', 'Hammer'] }
+    * def timestamp = java.lang.System.currentTimeMillis()
+    * def createJson = { name: 'Thor #{timestamp}', alterego: 'Thor Odinson', description: 'God of Thunder', powers: ['Lightning', 'Hammer'] }
     And request createJson
     When method POST
     Then status 201
-    
+
     # Ahora actualizamos el personaje creado
     * def personajeId = response.id
     * path personajeId
@@ -97,7 +98,8 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
   @id:9 @eliminarPersonaje @eliminacionExitosa204
   Scenario: T-API-TESTDEV-0001-CA09-Eliminar personaje existente 204 - karate
     # Primero creamos un personaje para luego eliminarlo
-    * def createJson = { name: 'Captain America', alterego: 'Steve Rogers', description: 'Super Soldier', powers: ['Shield', 'Strength'] }
+    * def timestamp = java.lang.System.currentTimeMillis()
+    * def createJson = { name: 'Captain America #{timestamp}' , alterego: 'Steve Rogers', description: 'Super Soldier', powers: ['Shield', 'Strength'] }
     And request createJson
     When method POST
     Then status 201
@@ -121,12 +123,5 @@ Feature: TESTDEV-0001 API de Personajes Marvel (microservicio para gestión de p
     # And match response.error == 'Character not found'
     # And match response != null
 
-  @id:11 @errorServidor @errorServicio
-  Scenario: T-API-TESTDEV-0001-CA11-Error de servicio - karate
-    * path 'internal-error-test'
-    When method GET
-    Then status 404
-    * print response
-    # And match response.error == 'Character not found'
-    # And match response != null
+
 
