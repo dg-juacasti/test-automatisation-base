@@ -1,0 +1,9 @@
+{
+  "name": "Test Special-#(timestamp)",
+  "alterego": "Special Alter",
+  "description": "Description with symbols",
+  "powers": [
+    "Power1",
+    "Power2"
+  ]
+}
