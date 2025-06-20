@@ -13,12 +13,19 @@ Feature: HU-0003 Marvel Characters Update (microservicio para actualización de 
       """
     * def headers = generarHeaders()
     * headers headers
+    * def getCurrentTimestamp =
+      """
+      function() {
+        return java.lang.System.currentTimeMillis();
+      }
+      """
 
   @id:1 @updateCharacter @solicitudExitosa200
   Scenario: T-API-HU-0003-CA01-Actualizar personaje exitosamente 200 - karate
     # Primero creamos un personaje
     * path '/characters'
     * def createCharacterRequest = read('classpath:data/marvel_characters_api/request_create_character.json')
+    * createCharacterRequest.name += '_' + getCurrentTimestamp()
     And request createCharacterRequest
     When method post
     Then status 201

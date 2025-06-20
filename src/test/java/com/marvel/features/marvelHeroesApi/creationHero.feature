@@ -14,10 +14,17 @@ Feature: HU-0002 Marvel Characters Creation (microservicio para creación de per
       """
     * def headers = generarHeaders()
     * headers headers
+    * def getCurrentTimestamp =
+      """
+      function() {
+        return java.lang.System.currentTimeMillis();
+      }
+      """
 
   @id:1 @createCharacter @solicitudExitosa201
   Scenario: T-API-HU-0002-CA01-Crear personaje exitosamente 201 - karate
     * def jsonData = read('classpath:data/marvel_characters_api/request_create_character.json')
+    * jsonData.name += '_' + getCurrentTimestamp() 
     And request jsonData
     When method post
     Then status 201
@@ -27,6 +34,7 @@ Feature: HU-0002 Marvel Characters Creation (microservicio para creación de per
   Scenario: T-API-HU-0002-CA02-Crear personaje con nombre duplicado 400 - karate
     # Primero creamos un personaje
     * def jsonData = read('classpath:data/marvel_characters_api/request_create_character_duplicate.json')
+    * jsonData.name += '_' + getCurrentTimestamp() 
     And request jsonData
     When method post
     Then status 201

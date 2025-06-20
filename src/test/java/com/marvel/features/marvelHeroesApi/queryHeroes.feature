@@ -13,6 +13,13 @@ Feature: HU-0001 Marvel Characters Query (microservicio para consulta de persona
       """
     * def headers = generarHeaders()
     * headers headers
+    * def getCurrentTimestamp =
+      """
+      function() {
+        return java.lang.System.currentTimeMillis();
+      }
+      """
+
     @id:1 @getCharacters @solicitudExitosa200
     Scenario: T-API-HU-0001-CA01-Obtener todos los personajes 200 - karate
       * path '/characters'
@@ -25,6 +32,7 @@ Feature: HU-0001 Marvel Characters Query (microservicio para consulta de persona
       # Primero creamos un personaje para asegurarnos que exista
       * path '/characters'
       * def createCharacterRequest = read('classpath:data/marvel_characters_api/request_create_character_spiderman.json')
+      * createCharacterRequest.name += '_' + getCurrentTimestamp() 
       And request createCharacterRequest
       When method post
       Then status 201
@@ -35,7 +43,7 @@ Feature: HU-0001 Marvel Characters Query (microservicio para consulta de persona
       When method get
       Then status 200
       And match response.id == characterId
-      And match response.name == 'Spiderman2'
+      And match response.name == createCharacterRequest.name
       
     @id:3 @getCharacterById @solicitudNoEncontrado404
     Scenario: T-API-HU-0001-CA03-Obtener personaje por ID inexistente 404 - karate
