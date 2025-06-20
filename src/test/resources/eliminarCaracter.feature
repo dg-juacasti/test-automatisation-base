@@ -29,10 +29,19 @@ Feature: Prueba de eliminación de caracter
     * print 'Updated character:', response
 
 
-  Scenario: T-API-HU-0004-CA01- Eliminación de caracter exitoso NO existente debe retornar error
+  Scenario: T-API-HU-0004-CA02- Eliminación de caracter NO existente debe retornar error
     # Intentamos actualizar un caracter NO existente
     Given url fullUrl + '/' + 999
     When method delete
     Then status 404
     And match response == read('classpath:data/not-found-caracter.json')
     * print 'Not found character:', response
+
+
+  Scenario: T-API-HU-0004-CA02- Eliminación de caracter encima del limite de la URL debe retonar error
+    # Intentamos actualizar un caracter NO existente
+    Given url fullUrl + '/' + 999999999999
+    When method delete
+    Then status 500
+    And match response == read('classpath:data/internal-error.json')
+    * print 'Delete character internal error:', response
