@@ -7,7 +7,7 @@ Feature: Delete character
 
   @id:1 @DeleteNotExistingCharacter @PositiveCase
   Scenario: T-API-BDR-1590-CA9-Delete existing character
-    Given path '/11'
+    Given path '/15'
     When method delete
     Then status 204
 
