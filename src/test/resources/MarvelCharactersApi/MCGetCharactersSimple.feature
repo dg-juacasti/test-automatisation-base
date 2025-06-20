@@ -18,3 +18,10 @@ Scenario: Obtener personajes y validar estructura básica
   And match each response contains { id: '#notnull' }
   And match each response contains { name: '#string' }
   And match each response contains { alterego: '#string' }
+
+Scenario: Validar tipos de propiedades en personajes
+  Given url endpoint
+  When method GET
+  Then status 200
+  And match response != null
+  And match each response contains { id: '#number', name: '#string', alterego: '#string', description: '#string' }
