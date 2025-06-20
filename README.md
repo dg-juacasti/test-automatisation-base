@@ -14,11 +14,7 @@ src/
     resources/
       karate-config.js            # Configuración de Karate
       marvel/
-        get.feature               # Pruebas de operaciones GET
-        post.feature              # Pruebas de operaciones POST
-        put.feature               # Pruebas de operaciones PUT
-        delete.feature            # Pruebas de operaciones DELETE
-        flow.feature              # Pruebas de flujo completo CRUD
+        characters.feature        # Pruebas unificadas de la API Marvel
 ```
 
 ## Casos de Prueba Implementados
