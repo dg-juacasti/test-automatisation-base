@@ -1,4 +1,4 @@
-@REQ_BAN-0002
+@REQ_UH-0002
 Feature: Obtener personaje por ID
 
   Background:
@@ -7,7 +7,7 @@ Feature: Obtener personaje por ID
 
 
 @id:1 @MarvelCharactersAPI  @ObtenerPersonajePorIdExitoso
-  Scenario: T-API-BAN-0002-CA1 Obtener personaje por ID (exitoso)
+  Scenario: T-API-UH-0002-CA1 Obtener personaje por ID (exitoso)
     Given url baseUrl
     And path '50'
     When method get
@@ -16,9 +16,9 @@ Feature: Obtener personaje por ID
     And print response
 
 @id:2 @MarvelCharactersAPI  @ObtenerPersonajePorIdNoexiste
-  Scenario: T-API-BAN-0002-CA2 Obtener personaje por ID (no existe)
+  Scenario: T-API-UH-0002-CA2 Obtener personaje por ID (no existe)
     Given url baseUrl
-    And path '99999'
+    And path '99999999'
     When method get
     Then status 404
     And match response.error == "Character not found"

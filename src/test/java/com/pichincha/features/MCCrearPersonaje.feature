@@ -1,4 +1,4 @@
-@REQ_BAN-0003
+@REQ_UH-0003
 Feature: Crear Personaje
 
   Background:
@@ -8,7 +8,7 @@ Feature: Crear Personaje
 
 
 @id:1 @MarvelCharactersAPI  @CrearPersonajeExitoso
-  Scenario: T-API-BAN-0003-CA1 Crear Personaje (exitoso)
+  Scenario: T-API-UH-0003-CA1 Crear Personaje (exitoso)
     Given url baseUrl
     And request character
     When method post
@@ -17,7 +17,7 @@ Feature: Crear Personaje
     And print response
 
   @id:2 @MarvelCharactersAPI  @CrearPersonajeNombreDuplicado
-  Scenario: T-API-BAN-0003-CA2 Crear personaje (nombre duplicado)
+  Scenario: T-API-UH-0003-CA2 Crear personaje (nombre duplicado)
     Given url baseUrl
     And request character
     When method post
@@ -26,7 +26,7 @@ Feature: Crear Personaje
     And print response
 
   @id:3 @MarvelCharactersAPI  @CrearPersonajeFaltaCamposRequeridos
-  Scenario: T-API-BAN-0003-CA3 Crear personaje (faltan campos requeridos)
+  Scenario: T-API-UH-0003-CA3 Crear personaje (faltan campos requeridos)
     Given url baseUrl
     And def characterWithoutRequiredFields = read('classpath:../MarvelCharacters/CrearPersonajeFaltaCamposRequeridos.json')
     And request characterWithoutRequiredFields
