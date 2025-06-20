@@ -1,0 +1,31 @@
+{
+  "errorHandlingConfig": {
+    "readTimeout": 15000,
+    "connectTimeout": 10000,
+    "retryCount": 3,
+    "retryInterval": 5000
+  },
+  "expectedErrors": {
+    "notFound": "Character not found",
+    "duplicate": "Character name already exists",
+    "malformedRequest": "Request body is malformed",
+    "validation": {
+      "name": "Name is required",
+      "alterego": "Alterego is required",
+      "description": "Description is required",
+      "powers": "Powers are required"
+    },
+    "serverError": "Internal server error"
+  },
+  "statusCodes": {
+    "success": 200,
+    "created": 201,
+    "noContent": 204,
+    "badRequest": 400,
+    "unauthorized": 401,
+    "notFound": 404,
+    "methodNotAllowed": 405,
+    "unsupportedMediaType": 415,
+    "serverError": 500
+  }
+}

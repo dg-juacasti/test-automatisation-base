@@ -2,7 +2,7 @@ import com.intuit.karate.junit5.Karate;
 
 class KarateBasicTest {
     static {
-        System.setProperty("karate.ssl", "true");
+        System.setProperty("karate.ssl", "false");
     }
     @Karate.Test
     Karate testBasic() {
