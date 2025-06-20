@@ -41,6 +41,30 @@ Feature: Test de API de marvel characters
     * print response
     And match response.error == 'Character name already exists'
 
+  @id:4 @CrearPersonajeCasoInvalidoDatosFaltantes
+  Scenario: T-API-BIL-1-CA4-Crear personaje con caso inválido (datos faltantes)
+    * def path = '/arevelo/api/characters'
+    * header Content-Type = 'application/json'
+    * def requestBody = read('classpath:../data/character-save-request.json')
+    * print requestBody
+    Given url baseUrl + path
+    And request
+     """
+      {
+        "name": "",
+        "alterego": "",
+        "description": "",
+        "powers": []
+      }
+      """
+    When method POST
+    Then status 400
+    * print response
+    And match response.name == 'Name is required'
+    And match response.description ==  'Description is required'
+    And match response.powers == 'Powers are required'
+    And match response.alterego == 'Alterego is required'
+
 
   @id:4 @ObtenerPersonarPorID
   Scenario: T-API-BIL-1-CA3-Obtener el personaje por id
