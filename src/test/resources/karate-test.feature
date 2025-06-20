@@ -28,8 +28,21 @@ Feature: Test de API de marvel characters
     And match response.description == 'Superhéroe arácnido de Marvel'
     And match response.powers == ["Agilidad", "Sentido arácnido", "Trepar muros"]
 
+  @id:3 @CrearPersonajeCasoInvalido
+  Scenario: T-API-BIL-1-CA3-Crear personaje con caso inválido
+    * def path = '/arevelo/api/characters'
+    * header Content-Type = 'application/json'
+    * def requestBody = read('classpath:../data/character-save-request.json')
+    * print requestBody
+    Given url baseUrl + path
+    And request requestBody
+    When method POST
+    Then status 400
+    * print response
+    And match response.error == 'Character name already exists'
 
-  @id:3 @ObtenerPersonarPorID
+
+  @id:4 @ObtenerPersonarPorID
   Scenario: T-API-BIL-1-CA3-Obtener el personaje por id
     * def idPersonaje = 1
     * def path = '/arevelo/api/characters/' + idPersonaje
