@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Karate Timeline</title>
+    <style>
+      body, html { font-family: arial, sans-serif; font-size: 11pt; }
+      #visualization { box-sizing: border-box; width: 100%; height: 300px; }
+      .vis-item.failed { background-color: #F2928C; }
+      .page-heading { padding: 0.5em; margin-bottom: 0.5em; background-color: lightcyan; border: 1px solid gray; }
+    </style>
+    <script src="res/vis.min.js"></script>
+    <link href="res/vis.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="page-heading">
+      <a href="karate-summary.html">Summary</a>
+    </div>     
+    <div id="visualization"></div>
+    <script>
+var groups = [{"content":"Test worker","id":1}];
+var items = [{"id":1,"group":1,"content":"karate-test[1:9]","start":1750436227368,"end":1750436228241,"title":"karate-test[1:9] 11:17:07.368-11:17:08.241 T-API-001-CA01- Obtener Personajes"},{"id":2,"group":1,"content":"karate-test[2:16]","start":1750436228257,"end":1750436228597,"title":"karate-test[2:16] 11:17:08.257-11:17:08.597 T-API-001-CA02- Obtener Personajes por Id"},{"id":3,"group":1,"content":"karate-test[3:23]","start":1750436228605,"end":1750436228866,"title":"karate-test[3:23] 11:17:08.605-11:17:08.866 T-API-001-CA03- Obtener Personajes por Id no Existe"},{"id":4,"group":1,"content":"karate-test[4:30]","start":1750436228873,"end":1750436229232,"title":"karate-test[4:30] 11:17:08.873-11:17:09.232 T-API-001-CA04- Crear Personaje Json","className":"failed"},{"id":5,"group":1,"content":"karate-test[5:39]","start":1750436229253,"end":1750436229608,"title":"karate-test[5:39] 11:17:09.253-11:17:09.608 T-API-001-CA05- Crear Personaje Json duplicado"},{"id":6,"group":1,"content":"karate-test[6:48]","start":1750436229619,"end":1750436230044,"title":"karate-test[6:48] 11:17:09.619-11:17:10.044 T-API-001-CA06- Crear Personaje Json falta datos"},{"id":7,"group":1,"content":"karate-test[7:57]","start":1750436230051,"end":1750436230354,"title":"karate-test[7:57] 11:17:10.051-11:17:10.354 T-API-001-CA07- Actualizar datos de personaje"},{"id":8,"group":1,"content":"karate-test[8:66]","start":1750436230364,"end":1750436230646,"title":"karate-test[8:66] 11:17:10.364-11:17:10.646 T-API-001-CA08- Actualizar datos de personaje no existe"},{"id":9,"group":1,"content":"karate-test[9:75]","start":1750436230658,"end":1750436230926,"title":"karate-test[9:75] 11:17:10.658-11:17:10.926 T-API-001-CA09- Eliminar Personaje"},{"id":10,"group":1,"content":"karate-test[10:82]","start":1750436230933,"end":1750436231276,"title":"karate-test[10:82] 11:17:10.933-11:17:11.276 T-API-001-CA10- Eliminar Personaje no existe"}];
+</script>
+    <script>
+      var container = document.getElementById('visualization');
+      var timeline = new vis.Timeline(container);
+      timeline.setOptions({groupOrder: 'content'});
+      timeline.setGroups(new vis.DataSet(groups));
+      timeline.setItems(new vis.DataSet(items));
+    </script>
+  </body>
+</html>
