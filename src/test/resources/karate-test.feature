@@ -2,7 +2,7 @@ Feature: Marvel Characters API Tests
 
   Background:
     * url 'http://bp-se-test-cabcd9b246a5.herokuapp.com'
-    * def username = 'testuser'
+    * def username = 'riaherre@pichincha.com'
     * def basePath = username + '/api/characters'
 
   Scenario: Get all characters
