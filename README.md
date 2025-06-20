@@ -1,6 +1,8 @@
-# Proyecto base de pruebas automatizadas con Karate, Java y Gradle
+# Proyecto base de pruebas automatizadas con Karate, Java y Gradle + GITHUB ACTIONS
 
-Este proyecto es una base para implementar pruebas automatizadas de la colección de peticiones entregadas (por ejemplo, una colección Postman). Todas las pruebas deben ser escritas en el archivo `src/test/resources/karate-test.feature` siguiendo la sintaxis de Karate DSL.
+Este proyecto es una base para implementar pruebas automatizadas de la colección de peticiones entregadas (por ejemplo,
+una colección Postman). Todas las pruebas deben ser escritas en el archivo `src/test/resources/karate-test.feature`
+siguiendo la sintaxis de Karate DSL.
 
 ## Instrucciones de uso
 
@@ -16,7 +18,7 @@ cd karate-test
 ### 2. Escribe tus pruebas
 
 - Implementa los escenarios de prueba en el archivo:
-  - `src/test/resources/karate-test.feature`
+    - `src/test/resources/karate-test.feature`
 - Usa la sintaxis de Karate para definir los escenarios y validaciones.
 
 ### 3. Ejecuta las pruebas
@@ -33,3 +35,9 @@ Esto compilará el proyecto y ejecutará todas las pruebas automatizadas.
 
 - Si tienes problemas de SSL, puedes agregar la línea `* configure ssl = true` en el `Background` de tu archivo `.feature`.
 - Los reportes de ejecución se generarán en la carpeta `karate-reports/`.
+
+### 4. Revisa los resultados
+
+Github Actions ejecutará automáticamente las pruebas en cada push al repositorio, y los resultados estarán disponibles para la descarga.
+
+
