@@ -2,12 +2,11 @@
 Feature: Marvel Characters API - Actualizar Personaje
 
   Background:
-    # Llama a la limpieza total, pero solo la primera vez que se encuentra en toda la ejecución.
+    # Llama a la limpieza total una sola vez.
     * callonce read('classpath:com/marvel/api/characters/_util/_setup.feature')
 
-    # Configuración normal de la URL para este feature
-    * url baseUrl
-    * path user, 'api', 'characters'
+    # Define la URL base completa para este feature, evitando problemas de path.
+    * url baseUrl + '/' + user + '/api/characters'
 
   Scenario: Actualizar un personaje existente (Captain America)
     * def uniqueName = 'CaptainAmerica-' + java.util.UUID.randomUUID()

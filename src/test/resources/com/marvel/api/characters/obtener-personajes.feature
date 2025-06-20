@@ -2,10 +2,7 @@
 Feature: Marvel Characters API - Obtener Personajes
 
   Background:
-    # Llama a la limpieza total, pero solo la primera vez que se encuentra en toda la ejecución.
     * callonce read('classpath:com/marvel/api/characters/_util/_setup.feature')
-
-    # Configuración normal de la URL para este feature
     * url baseUrl
     * path user, 'api', 'characters'
 
@@ -16,10 +13,9 @@ Feature: Marvel Characters API - Obtener Personajes
     And match response == '#array'
 
   Scenario: Obtener personaje por ID existente
-    # Generamos un nombre único para la prueba
     * def uniqueName = 'Wolverine-' + java.util.UUID.randomUUID()
     * def wolverine = { name: uniqueName, alterego: 'Logan', description: 'Has claws', powers: ['Healing factor'] }
-    * def result = callonce read('classpath:com/marvel/api/characters/_util/create-and-get-id.feature') { requestBody: wolverine }
+    * def result = callonce read('classpath:com/marvel/api/characters/_util/create-and-get-id.feature') ({ requestBody: wolverine })
     * def wolverineId = result.response.id
 
     Given path wolverineId
@@ -28,7 +24,7 @@ Feature: Marvel Characters API - Obtener Personajes
     And match response.id == wolverineId
     And match response.name == uniqueName
 
-    # Limpieza
+    # Limpieza de este personaje específico (buena práctica)
     * karate.call('classpath:com/marvel/api/characters/_util/delete-character.feature', { characterId: wolverineId })
 
   Scenario: Obtener personaje por ID inexistente
