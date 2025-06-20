@@ -11,6 +11,7 @@ Feature: Prueba de busqueda de caracter
 
     * print 'Generated test character:', testCharacter
 
+  @id:1 @buscarTodosCaracteres
   Scenario: T-API-HU-0002-CA01- Busqueda de todos los caracteres ( Sin params )
     Given url fullUrl
     When method get
@@ -19,6 +20,7 @@ Feature: Prueba de busqueda de caracter
     * print 'Retrieved characters:', response
     And match  each response contains call read ('classpath:data/listar-caracteres-schema.json')
 
+  @id:2 @buscarCaracterPorId
   Scenario: T-API-HU-0002-CA02- Busqueda de caracter por ID de caracter existente
    # Creamos caracter para una correcta validación de un caracter existente y sus datos
     * def characterId = null
@@ -38,7 +40,7 @@ Feature: Prueba de busqueda de caracter
     And match response.id == '#number'
     * print 'Find character:', response
 
-
+  @id:3 @buscarCaracterInexistente
   Scenario: T-API-HU-0002-CA03- Busqueda de caracter por ID de caracter NO existente
     Given url fullUrl + "/" + 9999
     When method get

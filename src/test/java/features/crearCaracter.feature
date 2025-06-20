@@ -12,25 +12,7 @@ Feature: Prueba de creación de caracter
 
     * print 'Generated test character:', testCharacter
 
-    # Función de cleanup
-    * def cleanupCharacter = 
-      """
-      function(characterId) {
-        if (characterId) {
-          try {
-            karate.log('Cleaning up character ID:', characterId);
-            var response = karate.call('delete', { url: fullUrl + '/' + characterId });
-            karate.log('Cleanup result:', response.status);
-            return response;
-          } catch(e) {
-            karate.log('Cleanup failed (expected in some cases):', e.message);
-            return { status: 'failed', error: e.message };
-          }
-        }
-        return { status: 'skipped' };
-      }
-      """
-
+  @id:1 @crearCaracterOK
   Scenario: T-API-HU-0001-CA01- Creación de caracter exitoso
     * def characterId = null
     Given url fullUrl
@@ -45,6 +27,8 @@ Feature: Prueba de creación de caracter
     * def characterId = response.id
     * print 'Created character:', response
 
+
+  @id:2 @crearCaracterSinCampos
   Scenario: T-API-HU-0001-CA02- Creación de caracter sin campos , debe retonar 404 y campos requeridos
     Given url fullUrl
     And request {}
@@ -54,6 +38,7 @@ Feature: Prueba de creación de caracter
     And match response == read('classpath:data/caracter-error-campos-requeridos.json')
     * print 'Error character response:', response
 
+  @id:3 @crearCaracterInternalError
   Scenario: T-API-HU-0001-CA03- Creación de caracter sin request , debe retornar 500 internal server error
     Given url fullUrl
     When method post

@@ -14,7 +14,7 @@ Feature: Prueba de actualización de caracter
     * print 'Generated test character:', testCharacter
     * print 'Generated update character:', updatedCharacterData
 
-
+  @id:1 @actualizarCaracterOk
   Scenario: T-API-HU-0003-CA01- Actualización de caracter exitoso
     # Creamos un caracter previamente para validar la actualizacion y asegurar uno existente
     * def characterId = null
@@ -35,7 +35,7 @@ Feature: Prueba de actualización de caracter
     And match response.id == characterId
     * print 'Updated character:', response
 
-
+  @id:2 @actualizarCaracterError
   Scenario: T-API-HU-0004-CA01- Actualización de caracter exitoso NO existente debe retornar error
     # Intentamos actualizar un caracter NO existente
     Given url fullUrl + '/' + 9999

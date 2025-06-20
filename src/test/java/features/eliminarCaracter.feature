@@ -12,7 +12,7 @@ Feature: Prueba de eliminación de caracter
 
     * print 'Generated test character:', testCharacter
 
-
+  @id:1 @eliminarCaracterOk
   Scenario: T-API-HU-0004-CA01- Eliminación de caracter exitoso
     # Creamos un caracter previamente para validar la eliminación y asegurar uno existente
     * def characterId = null
@@ -28,7 +28,7 @@ Feature: Prueba de eliminación de caracter
     Then status 204
     * print 'Updated character:', response
 
-
+  @id:2 @eliminarCaracterInexistente
   Scenario: T-API-HU-0004-CA02- Eliminación de caracter NO existente debe retornar error
     # Intentamos actualizar un caracter NO existente
     Given url fullUrl + '/' + 999
@@ -37,7 +37,7 @@ Feature: Prueba de eliminación de caracter
     And match response == read('classpath:data/not-found-caracter.json')
     * print 'Not found character:', response
 
-
+  @id:2 @eliminarCaracterInternalError
   Scenario: T-API-HU-0004-CA02- Eliminación de caracter encima del limite de la URL debe retonar error
     # Intentamos actualizar un caracter NO existente
     Given url fullUrl + '/' + 999999999999
