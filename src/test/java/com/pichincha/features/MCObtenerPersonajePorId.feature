@@ -9,16 +9,16 @@ Feature: Obtener personaje por ID
 @id:1 @MarvelCharactersAPI  @ObtenerPersonajePorIdExitoso
   Scenario: T-API-UH-0002-CA1 Obtener personaje por ID (exitoso)
     Given url baseUrl
-    And path '50'
+    And path '425'
     When method get
     Then status 200
-    And match response.id == 50
+    And match response.id == 425
     And print response
 
 @id:2 @MarvelCharactersAPI  @ObtenerPersonajePorIdNoexiste
   Scenario: T-API-UH-0002-CA2 Obtener personaje por ID (no existe)
     Given url baseUrl
-    And path '99999999'
+    And path '999'
     When method get
     Then status 404
     And match response.error == "Character not found"

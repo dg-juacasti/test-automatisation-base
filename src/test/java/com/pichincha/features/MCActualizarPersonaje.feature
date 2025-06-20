@@ -10,11 +10,11 @@ Feature: Actualizar personaje
 @id:1 @MarvelCharactersAPI  @ActualizarPersonajeExitoso
   Scenario: T-API-UH-0004-CA1 Actualizar personaje (exitoso)
     Given url baseUrl
-    And path '50'
+    And path '425'
     And request character
     When method put
     Then status 200
-    And match response.id == 50
+    And match response.id == 425
     And match response.alterego == "Tony Stark"
     And print response
 
