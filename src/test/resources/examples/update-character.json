@@ -1,0 +1,11 @@
+{
+  "name": "Doctor Strange",
+  "alterego": "Stephen Strange",
+  "description": "Updated description.",
+  "powers": [
+    "Magic",
+    "Teleportation",
+    "Time manipulation",
+    "Astral projection"
+  ]
+}
