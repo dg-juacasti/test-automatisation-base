@@ -1,0 +1,10 @@
+{
+    "id": 0,
+    "name": "Spiderman",
+    "alterego": "Peter Parker",
+    "description": "Habilidades de sensibilidad",
+    "powers": [
+        "Movimiento",
+        "Reflejos"
+    ]
+}
