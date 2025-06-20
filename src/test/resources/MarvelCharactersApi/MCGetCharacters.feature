@@ -9,7 +9,7 @@ Background:
   * def testUser = karate.get('testUser')
   * def endpoint = baseUrl + '/' + testUser + '/api/characters'
 
-  # Leer el personaje creado desde archivo JSON
+  # Leer personaje creado desde archivo JSON
   * def fs = Java.type('java.nio.file.Files')
   * def path = Java.type('java.nio.file.Paths').get('target/character.json')
   * def characterInfo = JSON.parse(fs.readString(path))
@@ -40,25 +40,20 @@ Scenario: Validar poderes de personajes opcionales
   And match each response == '#? !_.powers || _.powers instanceof Array'
 
 Scenario: Validar que personaje creado esté presente en la lista
-  * def fs = Java.type('java.nio.file.Files')
-  * def path = Java.type('java.nio.file.Paths').get('target/character.json')
-  * def characterInfo = JSON.parse(fs.readString(path))
-
   Given url endpoint
   When method GET
   Then status 200
 
-  # Crear un objeto esperado para buscarlo en la lista
-  * def expectedCharacter = {}
-  * expectedCharacter.name = characterInfo.name
-  * expectedCharacter.id = '#number'
-  * expectedCharacter.alterego = '#string'
-  * expectedCharacter.description = '#string'
-  * expectedCharacter.powers = '#[]'
-
-  * match response contains expectedCharacter
-
-  # Verificar que al menos uno en la respuesta coincida con los valores
+  * def expectedCharacter =
+    """
+    {
+      id: '#number',
+      name: '#(characterInfo.name)',
+      alterego: '#string',
+      description: '#string',
+      powers: '#[]'
+    }
+    """
   * match response contains expectedCharacter
 
 Scenario: Error Obtener personaje inexistente debe retornar error 404
@@ -94,22 +89,21 @@ Scenario: Obtener personaje existente por ID 3 exitosamente
     """
   And match response.name == "Iron Man"
 
-
-Scenario: Obtener personaje existente por ID dinamico, valida recien creado
+Scenario: Obtener personaje existente por ID dinámico (personaje creado en MCPostNewCharacter.feature)
   * def characterId = characterInfo.id
-   * def endpoint = baseUrl + '/' + testUser + '/api/characters/' + characterId
+  * def endpoint = baseUrl + '/' + testUser + '/api/characters/' + characterId
 
-   Given url endpoint
-   When method GET
-   Then status 200
-   And match response ==
-   """
-     {
-       id: '#number',
-       name: '#(characterInfo.name)',
-       alterego: '#string',
-       description: '#string',
-       powers: '#[]'
-     }
-   """
-   And match response.name == characterInfo.name
+  Given url endpoint
+  When method GET
+  Then status 200
+  And match response ==
+    """
+    {
+      id: '#number',
+      name: '#(characterInfo.name)',
+      alterego: '#string',
+      description: '#string',
+      powers: '#[]'
+    }
+    """
+  And match response.name == characterInfo.name
