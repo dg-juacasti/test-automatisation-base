@@ -1,0 +1,33 @@
+[
+  {
+    "id": 2,
+    "name": "Spider-Man Test",
+    "alterego": "Peter Parker",
+    "description": "Superhéroe arácnido de Marvel para testing",
+    "powers": [
+      "Agilidad",
+      "Sentido arácnido",
+      "Trepar muros"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Batman",
+    "alterego": "Bruce Wayne",
+    "description": "Genius billionaire",
+    "powers": [
+      "Strong",
+      "Force"
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Iron Man",
+    "alterego": "Tony Stark",
+    "description": "Updated description",
+    "powers": [
+      "Armor",
+      "Flight"
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "name": "New Character",
+  "alterego": "Secret Identity",
+  "description": "Test character for API validation",
+  "powers": [
+    "Power1",
+    "Power2",
+    "Power3"
+  ]
+}

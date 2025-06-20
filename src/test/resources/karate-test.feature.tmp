@@ -5,6 +5,7 @@ Feature: TEST-001 Gestión de personajes de superhéroes (microservicio para man
     * def generarHeaders = function() { return { 'Content-Type': 'application/json' } }
     * def headers = generarHeaders()
     * configure headers = headers
+    * def characterId = null
     
   @id:1 @obtenerPersonajes @solicitudExitosa200
   Scenario: T-API-TEST-001-CA01-Obtener todos los personajes exitosamente 200 - karate
@@ -14,21 +15,19 @@ Feature: TEST-001 Gestión de personajes de superhéroes (microservicio para man
     And match response != null
     And match response[0].id != null
     And match each response contains { id: '#number', name: '#string', alterego: '#string', description: '#string', powers: '#array' }
-    * def firstCharacterId = response[0].id
+    * set characterId = response[0].id
 
   @id:2 @obtenerPersonajePorId @solicitudExitosa200
   Scenario: T-API-TEST-001-CA02-Obtener personaje por ID exitosamente 200 - karate
-    Given def result = callonce read('karate-test.feature@obtenerPersonajes')
-    * def characterId = result.firstCharacterId
-    * path '/characters/', characterId
+    * path '/characters/128'
     When method GET
     Then status 200
     And match response != null
-    And match response.id == characterId
-    And match response.name != null
-    And match response.alterego != null
-    And match response.description != null
-    And match response.powers != null
+    And match response.id == 128
+    And match response.name contains 'Iron Man'
+    And match response.alterego == 'Tony Stark'
+    And match response.description == 'Genius billionaire'
+    And match response.powers == ['Armor', 'Flight']
 
   @id:3 @obtenerPersonajePorId @personajeNoExiste404
   Scenario: T-API-TEST-001-CA03-Obtener personaje por ID inexistente 404 - karate
