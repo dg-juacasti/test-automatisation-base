@@ -25,3 +25,21 @@ Feature: Evaluación API SUPER SIMPLE
         When method GET
         Then status 404
         And print response
+
+    @id:4 @CrearPersonaje
+    Scenario: T-API-001-CA04- Crear Personaje Json
+        Given url base_url + '/testuser/api/characters'
+        And def personajeJson = read('classpath:../personaje.json')
+        And request personajeJson
+        When method POST
+        Then status 201
+        And print response
+
+    @id:5 @CrearPersonajeDuplicado
+    Scenario: T-API-001-CA05- Crear Personaje Json duplicado
+        Given url base_url + '/testuser/api/characters'
+        And def personajeJson = read('classpath:../personaje.json')
+        And request personajeJson
+        When method POST
+        Then status 400
+        And print response
