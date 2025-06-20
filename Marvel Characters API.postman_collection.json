@@ -1,0 +1,1023 @@
+{
+	"info": {
+		"_postman_id": "7ed64470-f967-481d-96fe-0dfe79a5982d",
+		"name": "Marvel Characters API",
+		"description": "Colección de pruebas para la API REST de personajes de Marvel, incluyendo casos exitosos, validaciones y errores de nombre duplicado. Ahora con username en la ruta.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26696619"
+	},
+	"item": [
+		{
+			"name": "Obtener todos los personajes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - Ok",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431063&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=eMyyYvdJYFp5apkNbp%2FdLfoxBDG4KyRSANwbbz%2BD2rk%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431063&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=eMyyYvdJYFp5apkNbp%2FdLfoxBDG4KyRSANwbbz%2BD2rk%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:51:03 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 2,\n        \"name\": \"Iron Man\",\n        \"alterego\": \"Otro\",\n        \"description\": \"Otro\",\n        \"powers\": [\n            \"Armor\"\n        ]\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Obtener personaje por ID (exitoso)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/2",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters",
+						"2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - Ok",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/2",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431087&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=w%2FcZHfdXGg%2BqV8VYv9MIXBBfNagbXr3PURk0ij7ZBbE%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431087&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=w%2FcZHfdXGg%2BqV8VYv9MIXBBfNagbXr3PURk0ij7ZBbE%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:51:27 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 2,\n    \"name\": \"Iron Man\",\n    \"alterego\": \"Otro\",\n    \"description\": \"Otro\",\n    \"powers\": [\n        \"Armor\"\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener personaje por ID (no existe)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/999",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters",
+						"999"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "404 - Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/999",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters",
+								"999"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431108&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=9aohOQI23b1Np%2BHUG0cXQH5lUCu6w0kfAaV1KoA84j0%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431108&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=9aohOQI23b1Np%2BHUG0cXQH5lUCu6w0kfAaV1KoA84j0%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:51:48 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Character not found\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear personaje (exitoso)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Iron Man23\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Genius billionaire\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+				},
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "201 - Created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Iron Man23\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Genius billionaire\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+						},
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431169&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=SGInNrwpNilSNcN5sQuTH%2BDUuiO2Rz3SUqOmuXQu%2B80%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431169&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=SGInNrwpNilSNcN5sQuTH%2BDUuiO2Rz3SUqOmuXQu%2B80%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:52:49 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 4,\n    \"name\": \"Iron Man23\",\n    \"alterego\": \"Tony Stark\",\n    \"description\": \"Genius billionaire\",\n    \"powers\": [\n        \"Armor\",\n        \"Flight\"\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear personaje (nombre duplicado)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Otro\",\n  \"description\": \"Otro\",\n  \"powers\": [\"Armor\"]\n}"
+				},
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "400 Bad Request - Nombre duplicado",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": "{\n  \"error\": \"Character name already exists\"\n}"
+				},
+				{
+					"name": "400 Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Otro\",\n  \"description\": \"Otro\",\n  \"powers\": [\"Armor\"]\n}"
+						},
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431186&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=xPKaRlFukKHiwcOS91fIdpXNnY2M3qADnKdcJtVg4jo%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431186&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=xPKaRlFukKHiwcOS91fIdpXNnY2M3qADnKdcJtVg4jo%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:53:06 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Character name already exists\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear personaje (faltan campos requeridos)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"\",\n  \"alterego\": \"\",\n  \"description\": \"\",\n  \"powers\": []\n}"
+				},
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "400 Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"alterego\": \"\",\n  \"description\": \"\",\n  \"powers\": []\n}"
+						},
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431205&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=foLtNMBgf1eZy9X4QYO5wM1NX5gdQwuWleLpAqpt1rQ%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431205&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=foLtNMBgf1eZy9X4QYO5wM1NX5gdQwuWleLpAqpt1rQ%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:53:25 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Name is required\",\n    \"description\": \"Description is required\",\n    \"powers\": \"Powers are required\",\n    \"alterego\": \"Alterego is required\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar personaje (exitoso)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Updated description\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+				},
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/4",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters",
+						"4"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 Ok",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Updated description\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+						},
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/4",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters",
+								"4"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431240&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=I6ttN4TskbLCbTWD%2F7d%2Ba1irVLAzJ3lVOrcDml%2BLlAs%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431240&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=I6ttN4TskbLCbTWD%2F7d%2Ba1irVLAzJ3lVOrcDml%2BLlAs%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:54:00 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 4,\n    \"name\": \"Iron Man\",\n    \"alterego\": \"Tony Stark\",\n    \"description\": \"Updated description\",\n    \"powers\": [\n        \"Armor\",\n        \"Flight\"\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar personaje (no existe)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Updated description\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+				},
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/999",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters",
+						"999"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "404 Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/testuser/api/characters/999",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"testuser",
+								"api",
+								"characters",
+								"999"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": "{\n  \"error\": \"Character not found\"\n}"
+				},
+				{
+					"name": "404 Not Found",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Updated description\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+						},
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/999",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters",
+								"999"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431257&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=noPeakh8TsNuJUlCHw%2Fkj2e5KG%2Fr7w%2F0MlrytSW51K4%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431257&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=noPeakh8TsNuJUlCHw%2Fkj2e5KG%2Fr7w%2F0MlrytSW51K4%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:54:17 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Character not found\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar personaje (exitoso)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/3",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters",
+						"3"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "204 No Content",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/2",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters",
+								"2"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431289&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=TusqJ2qSfGB0EUmDq%2FjDdIf54IZrocOtZAlHESMKYno%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431289&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=TusqJ2qSfGB0EUmDq%2FjDdIf54IZrocOtZAlHESMKYno%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:54:49 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Eliminar personaje (no existe)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/999",
+					"protocol": "http",
+					"host": [
+						"bp-se-test-cabcd9b246a5",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"gaperez",
+						"api",
+						"characters",
+						"999"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "404 Not Found",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/gaperez/api/characters/999",
+							"protocol": "http",
+							"host": [
+								"bp-se-test-cabcd9b246a5",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"gaperez",
+								"api",
+								"characters",
+								"999"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Cowboy"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1750431311&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=RuQ2kYbXdWGIScny0upZvIkq7rMvbCYLmDuxgR3Nyw4%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1750431311&sid=1b10b0ff-8a76-4548-befa-353fc6c6c045&s=RuQ2kYbXdWGIScny0upZvIkq7rMvbCYLmDuxgR3Nyw4%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jun 2025 14:55:11 GMT"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Character not found\"\n}"
+				}
+			]
+		}
+	]
+}
