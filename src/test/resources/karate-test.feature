@@ -3,10 +3,9 @@ Feature: Test de API de marvel characters
 
   Background:
     * configure ssl = true
-    * def baseUrl = 'http://bp-se-test-cabcd9b246a5.herokuapp.com'
   @id:1 @ObtenerTodosPersonajes
   Scenario: T-API-BIL-1-CA1-Obtener todos lo personajes
-    * def path = '/arevelo/api/characters'
+    * def path = '/api/characters'
     Given url baseUrl + path
     When method get
     Then status 200
@@ -14,23 +13,26 @@ Feature: Test de API de marvel characters
 
   @id:2 @CrearPersonaje
   Scenario: T-API-BIL-1-CA2-Crear personaje
-    * def path = '/arevelo/api/characters'
+    * def path = '/api/characters'
     * header Content-Type = 'application/json'
     * def requestBody = read('classpath:../data/character-save-request.json')
-    * print requestBody
+    * def randomNumber = Math.round(Math.random() * 10000)
+    * set requestBody.name = requestBody.name + '_' + randomNumber
+    * print 'Creating character', requestBody
     Given url baseUrl + path
     And request requestBody
     When method POST
     Then status 201
     * print response
-    And match response.name == 'Spider-Man-1'
+    And match response.name == requestBody.name
     And match response.alterego == 'Peter Parker'
     And match response.description == 'Superhéroe arácnido de Marvel'
     And match response.powers == ["Agilidad", "Sentido arácnido", "Trepar muros"]
 
+
   @id:3 @CrearPersonajeCasoInvalido
   Scenario: T-API-BIL-1-CA3-Crear personaje con caso inválido
-    * def path = '/arevelo/api/characters'
+    * def path = '/api/characters'
     * header Content-Type = 'application/json'
     * def requestBody = read('classpath:../data/character-save-request.json')
     * print requestBody
@@ -43,7 +45,7 @@ Feature: Test de API de marvel characters
 
   @id:4 @CrearPersonajeCasoInvalidoDatosFaltantes
   Scenario: T-API-BIL-1-CA4-Crear personaje con caso inválido (datos faltantes)
-    * def path = '/arevelo/api/characters'
+    * def path = '/api/characters'
     * header Content-Type = 'application/json'
     * def requestBody = read('classpath:../data/character-save-request.json')
     * print requestBody
@@ -68,8 +70,7 @@ Feature: Test de API de marvel characters
 
   @id:5 @ObtenerPersonajePorID
   Scenario: T-API-BIL-1-CA5-Obtener el personaje por id
-    * def idPersonaje = 1
-    * def path = '/arevelo/api/characters/' + idPersonaje
+    * def path = '/api/characters/' + idPersonaje
     Given url baseUrl + path
     When method get
     Then status 200
@@ -78,7 +79,7 @@ Feature: Test de API de marvel characters
   @id:6 @ObtenerPersonajeNoExiste
   Scenario: T-API-BIL-1-CA6-Obtener el personaje por id (no existe)
     * def idPersonaje = 9999
-    * def path = '/arevelo/api/characters/' + idPersonaje
+    * def path = '/api/characters/' + idPersonaje
     Given url baseUrl + path
     When method get
     Then status 404
@@ -87,7 +88,7 @@ Feature: Test de API de marvel characters
 
   @id:7 @ActualizarPersonajeExitoso
   Scenario: T-API-BIL-1-CA7-Actualizar personaje con caso exito
-    * def path = '/arevelo/api/characters'
+    * def path = '/api/characters'
     * def idPersonaje = 1
     * header Content-Type = 'application/json'
     Given url baseUrl + path + '/' + idPersonaje
@@ -110,7 +111,7 @@ Feature: Test de API de marvel characters
 
   @id:8 @ActualizarPersonajeNoExiste
   Scenario: T-API-BIL-1-CA8-Actualizar personaje (no existe)
-    * def path = '/arevelo/api/characters'
+    * def path = '/api/characters'
     * def idPersonaje = 400
     * header Content-Type = 'application/json'
     Given url baseUrl + path + '/' + idPersonaje
@@ -127,3 +128,13 @@ Feature: Test de API de marvel characters
     Then status 404
     * print response
     And match response.error == 'Character not found'
+
+
+  @id:9 @EliminarPersonajeExitoso
+  Scenario: T-API-BIL-1-CA8-Eliminar personaje exitosamente
+    * def idPersonaje = 1
+    * def path = '/api/characters/' + idPersonaje
+    Given url baseUrl + path
+    When method DELETE
+    Then status 204
+    * print response
