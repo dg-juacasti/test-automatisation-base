@@ -1,253 +1,421 @@
-Feature: Marvel Characters API Tests
+Feature: API de Personajes Marvel
 
 Background:
-  # Carga de archivos de configuración y datos
-  * def config = read('classpath:data/config.json')[0]
-  * def baseUrl = config.baseUrl
-  * def username = config.username
-  * url baseUrl + '/' + username + '/api/characters'
-  # Desactivamos SSL porque la API usa HTTP, no HTTPS
-  * configure ssl = false
-    # Carga de datos de prueba desde archivos JSON
-  * def schemas = read('classpath:data/schemas.json')
-  * def characterSchema = schemas.characterSchema
-  * def ironManData = read('classpath:data/ironman.json')
-  * def spiderManData = read('classpath:data/spiderman.json')
-  * def thorData = read('classpath:data/thor.json')
-  * def hulkData = read('classpath:data/hulk.json')
-  * def captainAmericaData = read('classpath:data/captain-america.json')
-  * def invalidCharacter = read('classpath:data/invalid-character.json')
-    # Definimos variables para los personajes - creamos copias profundas
-  * def ironMan = read('classpath:data/ironman.json')
-  * def spiderMan = read('classpath:data/spiderman.json')
+  # Configuración básica
+  * configure ssl = true
+  * url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/testuser/api'
+  * configure readTimeout = 60000
+  * configure connectTimeout = 60000
+  * configure headers = { 'Content-Type': 'application/json' }    # Generador de nombres únicos para evitar conflictos
+  * def nameRandom = 'Iron Man-' + java.util.UUID.randomUUID()
+  * def daycastiName = 'daycasti-' + java.util.UUID.randomUUID()
   
-  # Función para generar strings aleatorios y evitar duplicados
-  * def randomString = function(){ return java.util.UUID.randomUUID() + '' }
-  * def uniqueName = function(prefix){ return prefix + '-' + randomString() }
+  # Esquema para validación de respuestas
+  * def characterSchema = { id: '#number', name: '#string', alterego: '#string', description: '#string', powers: '#array' }
+  
+  # Datos de personajes predefinidos basados en la colección Postman
+  * def ironManData = { name: "Iron Man", alterego: "daycasti", description: "Genius billionaire", powers: ["Armor", "Flight"] }
 
-# 1. Obtener todos los personajes
-Scenario: Obtener todos los personajes
-  Given path ''
-  When method GET
+@Get @all
+Scenario: Verificar que /characters responde 200 con un array
+  Given path '/characters'
+  When method get
   Then status 200
   And match response == '#array'
-  And match each response contains characterSchema
 
-# 2. Obtener personaje por ID
-Scenario: Obtener un personaje por ID
-  # Primero creamos un personaje
-  Given path ''
-  And request ironMan
-  When method POST
-  Then status 201
-  * def createdId = response.id
-  
-  # Luego lo consultamos por ID
-  Given path '/' + createdId
-  When method GET
+@Get @all
+Scenario: Verificar que los elementos de /characters contienen id y nombre
+  Given path '/characters'
+  When method get
   Then status 200
-  And match response contains characterSchema
-  And match response.id == createdId
-  And match response.name == ironMan.name
+  And match each response contains { id: '#number', name: '#string' }
 
-# 3. Obtener un personaje que no existe
-Scenario: Obtener un personaje que no existe
-  Given path '/99999'
-  When method GET
-  Then status 404
-  And match response.error == 'Character not found'
-
-# 4. Crear un personaje exitosamente
-Scenario: Crear un personaje exitosamente
-  # Preparar datos para evitar duplicados
-  * def hero = read('classpath:data/ironman.json')
-  * set hero.name = uniqueName('Iron Man')
-  
-  Given path ''
-  And request hero
-  When method POST
-  Then status 201
-  And match response contains characterSchema
-  And match response.name == hero.name
-  * def createdId = response.id
-
-# 5. Validar error al crear personaje con nombre duplicado
-Scenario: Validar error al crear personaje con nombre duplicado
-  # Primero creamos un personaje con un nombre específico
-  * def hero = { name: 'Duplicated Hero-' + randomString(), alterego: 'Original', description: 'Original description', powers: ['Power1'] }
-  Given path ''
-  And request hero
-  When method POST
-  Then status 201
-  
-  # Intentamos crear otro con el mismo nombre
-  Given path ''
-  And request hero
-  When method POST
-  Then status 400
-  And match response.error == 'Character name already exists'
-
-# 6. Validar error al crear personaje con datos inválidos
-Scenario: Validar error al crear personaje con datos inválidos
-  Given path ''
-  And request invalidCharacter
-  When method POST
-  Then status 400
-  And match response.name == 'Name is required'
-  And match response.alterego == 'Alterego is required'
-  And match response.description == 'Description is required'
-  And match response.powers == 'Powers are required'
-
-# 7. Actualizar un personaje exitosamente
-Scenario: Actualizar un personaje exitosamente
-  # Primero creamos un personaje
-  Given path ''
-  And request ironMan
-  When method POST
-  Then status 201
-  * def createdId = response.id
-  
-  # Luego lo actualizamos
-  * def updatedIronMan = { name: ironMan.name, alterego: 'Tony Stark', description: 'Updated description', powers: ['Armor', 'Flight', 'Intelligence'] }
-  Given path '/' + createdId
-  And request updatedIronMan
-  When method PUT
-  Then status 200
-  And match response.description == 'Updated description'
-  And match response.powers contains 'Intelligence'
-
-# 8. Actualizar un personaje que no existe
-Scenario: Actualizar un personaje que no existe
-  Given path '/99999'
-  And request ironMan
-  When method PUT
-  Then status 404
-  And match response.error == 'Character not found'
-
-# 9. Eliminar un personaje exitosamente
-Scenario: Eliminar un personaje exitosamente
-  # Primero creamos un personaje
-  Given path ''
-  And request spiderMan
-  When method POST
-  Then status 201
-  * def createdId = response.id
-  
-  # Luego lo eliminamos
-  Given path '/' + createdId
-  When method DELETE
-  Then status 204
-  
-  # Verificamos que se haya eliminado
-  Given path '/' + createdId
-  When method GET
-  Then status 404
-
-# 10. Eliminar un personaje que no existe
-Scenario: Eliminar un personaje que no existe
-  Given path '/99999'
-  When method DELETE
-  Then status 404
-  And match response.error == 'Character not found'
-
-# 11. Filtrar personajes por nombre
+@Get @filter
 Scenario: Filtrar personajes por nombre
-  # Primero creamos un personaje con nombre único
-  * def uniqueName = 'Unique-' + randomString()
-  * def uniqueHero = { name: uniqueName, alterego: 'Unique Identity', description: 'Unique description', powers: ['Unique Power'] }
-  Given path ''
-  And request uniqueHero
-  When method POST
+  # Primero creamos un personaje con nombre único para garantizar que exista
+  * def uniqueHeroName = 'DaycastiHero-' + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "#(uniqueHeroName)", alterego: "daycasti", description: "Filterable hero", powers: ["Search", "Filter"]}
+  When method post
   Then status 201
+  * def heroId = response.id
   
-  # Buscamos por ese nombre
-  Given path ''
-  And param name = uniqueName
-  When method GET
+  # Ahora buscar por ese nombre
+  Given path '/characters'
+  And param name = uniqueHeroName
+  When method get
   Then status 200
-  And match response[0].name == uniqueName
-
-# 12. Filtrar personajes por poder
-Scenario: Filtrar personajes por poder
-  # Primero creamos un personaje con poder único
-  * def uniquePower = 'UniqueAbility-' + randomString()
-  * def powerfulHero = { name: 'Powerful-' + randomString(), alterego: 'Power User', description: 'Has special powers', powers: [uniquePower, 'Strength'] }
-  Given path ''
-  And request powerfulHero
-  When method POST
-  Then status 201
+  And match response[0].name == uniqueHeroName
   
-  # Buscamos por ese poder
-  Given path ''
+  # Limpiamos: eliminamos el personaje creado
+  Given path '/characters/' + heroId
+  When method delete
+  Then status 204
+
+@Get @filter
+Scenario: Filtrar personajes por poder específico
+  # Primero creamos un personaje con poder único
+  * def uniquePower = 'DaycastiPower-' + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "PowerHero-" + java.util.UUID.randomUUID(), alterego: "daycasti", description: "Hero with unique power", powers: ["#(uniquePower)", "Strength"]}
+  When method post
+  Then status 201
+  * def powerHeroId = response.id
+  
+  # Ahora buscar por ese poder
+  Given path '/characters'
   And param power = uniquePower
-  When method GET
+  When method get
   Then status 200
   And match response[0].powers contains uniquePower
+  
+  # Limpiamos: eliminamos el personaje creado
+  Given path '/characters/' + powerHeroId
+  When method delete
+  Then status 204
 
-# 13. Obtener estadísticas de personajes
+@Get @stats
 Scenario: Obtener estadísticas de personajes
-  Given path '/stats'
-  When method GET
+  Given path '/characters/stats'
+  When method get
   Then status 200
   And match response contains { totalCharacters: '#number', powerStats: '#object' }
 
-# 14. Actualizar poder específico
-Scenario: Actualizar poder específico de un personaje
-  # Primero creamos un personaje
-  Given path ''
-  And request ironMan
-  When method POST
+Scenario: Crear nuevo personaje, obtener personaje creado, verificar que no puedo volver a crear con el mismo nombre, eliminarlo y comprabar que no puedo obtenerlo
+  # Post crear persona (basado en el ejemplo de Postman)
+  Given path '/characters'
+  And request { name: "#(nameRandom)", alterego: "daycasti", description: "Genius billionaire", powers: ["Armor", "Flight"]}
+  When method post
   Then status 201
-  * def createdId = response.id
+  * def nuevoId = response.id
   
-  # Actualizamos solo los poderes
-  * def powerUpdate = { powers: ['Armor', 'Flight', 'Genius'] }
-  Given path '/' + createdId + '/powers'
-  And request powerUpdate
-  When method PATCH
+  #get personaje creado
+  Given path '/characters/' + nuevoId
+  When method get
   Then status 200
-  And match response.powers contains 'Genius'
-  And match response.name == ironMan.name
+  And match response contains { id: '#number', name: '#string' }
+  And match response.id == nuevoId
+  And match response.name == nameRandom
+    # Post intentar crear nuevamente (como en el ejemplo Postman de nombre duplicado)
+  Given path '/characters'
+  And request { name: "#(nameRandom)", alterego: "daycasti", description: "Genius billionaire", powers: ["Armor", "Flight"]}
+  When method post
+  Then status 400
+  And match response.error == "Character name already exists"
 
-# 15. Verificar disponibilidad de API
-Scenario: Verificar disponibilidad de API
-  Given url baseUrl + '/' + username + '/api/health'
-  When method GET
-  Then status 200
-  And match response contains { status: 'UP' }
-
-# 16. Flujo completo CRUD
-Scenario: Flujo completo CRUD de personaje
-  # Crear
-  * def uniqueName = 'Hero-' + randomString()
-  * def testCharacter = { name: uniqueName, alterego: 'Secret Identity', description: 'Test hero', powers: ['Testing'] }
-  Given path ''
-  And request testCharacter
-  When method POST
-  Then status 201
-  * def id = response.id
-  
-  # Leer
-  Given path '/' + id
-  When method GET
-  Then status 200
-  And match response.name == uniqueName
-  
-  # Actualizar
-  * def updatedCharacter = { name: uniqueName, alterego: 'New Identity', description: 'Updated description', powers: ['Testing', 'Debugging'] }
-  Given path '/' + id
-  And request updatedCharacter
-  When method PUT
-  Then status 200
-  And match response.description == 'Updated description'
-  And match response.powers contains 'Debugging'
-  
-  # Eliminar
-  Given path '/' + id
-  When method DELETE
+  # Delete Elimnar Personaje Creado
+  Given path '/characters/' + nuevoId
+  When method delete
   Then status 204
   
-  # Verificar eliminación
-  Given path '/' + id
-  When method GET
+  # Obtener personaje eliminado
+  Given path '/characters/' + nuevoId
+  When method get
   Then status 404
+  And match response.error == 'Character not found'
+
+Scenario: Crear personaje, actualizarlo y eliminarlo
+  # Post crear personaje
+  Given path '/characters'
+  And request { name: "#(daycastiName)", alterego: "daycasti", description: "Superhéroe desarrollador", powers: ["Java", "Testing"]}
+  When method post
+  Then status 201
+  * def nuevoId = response.id
+  
+  # Put actualizar personaje creado (como ejemplo de Postman)
+  Given path '/characters/' + nuevoId
+  And request { name: "#(daycastiName)", alterego: "daycasti", description: "Updated description", powers: ["Armor", "Flight"]}
+  When method put
+  Then status 200
+  And match response contains { id: '#number', name: '#string' }
+
+  # Delete Elimnar Personaje Creado
+  Given path '/characters/' + nuevoId
+  When method delete
+  Then status 204
+
+@Get @one
+Scenario: Verificar que el de /characters/{id} devulve error con un id mal formado
+  Given path '/characters/aaaa'
+  When method get
+  Then status 500
+  And match response.error == 'Internal server error'
+
+@Post
+Scenario: Verificar que se no se crea un personaje con datos vacios
+  Given path '/characters'
+  And request { }
+  When method post
+  Then status 400
+  And match response.name == "Name is required"
+  And match response.description == "Description is required"
+  And match response.powers == "Powers are required"
+  And match response.alterego == "Alterego is required"
+
+@Post @validation
+Scenario: Verificar que se no se crea un personaje con array de poderes vacío
+  Given path '/characters'
+  And request { name: "TestHero", alterego: "Test Alterego", description: "Test Description", powers: [] }
+  When method post
+  Then status 400
+  And match response.powers == "Powers are required"
+
+@Post @validation
+Scenario: Verificar que se no se crea un personaje con nombre muy largo
+  * def longName = new Array(256).join('a') // Nombre de 255 caracteres 'a'
+  Given path '/characters'
+  And request { name: "#(longName)", alterego: "Test", description: "Test", powers: ["Power1"] }
+  When method post
+  Then status 400
+  
+@Post @validation
+Scenario: Verificar creación de personaje con poderes múltiples
+  * def heroName = "MultiPower-" + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "#(heroName)", alterego: "daycasti", description: "Hero with many powers", powers: ["Power1", "Power2", "Power3", "Power4", "Power5"] }
+  When method post
+  Then status 201
+  And match response.powers == ["Power1", "Power2", "Power3", "Power4", "Power5"]
+  And match response.powers.length == 5
+  
+  # Limpiamos
+  * def heroId = response.id
+  Given path '/characters/' + heroId
+  When method delete
+  Then status 204
+
+@Put
+Scenario: Verificar que devuleve error cuando intento actualizar un personaje con un id que no existe
+  Given path '/characters/1'
+  And request { name: "Iron Man" , alterego: "daycasti", description: "Updated description", powers: ["Armor", "Flight"]}
+  When method put
+  Then status 404
+  And match response.error == "Character not found"
+
+@Put
+Scenario: Verificar que devuleve error cuando intento actualizar un personaje con un id que no invalido
+  Given path '/characters/aaa'
+  And request { name: "Iron Man" , alterego: "daycasti", description: "Updated description", powers: ["Armor", "Flight"]}
+  When method put
+  Then status 500
+  And match response.error == 'Internal server error'
+
+@Put @complete
+Scenario: Actualización completa de un personaje cambiando todos los campos
+  # Primero creamos un personaje
+  * def initialName = "UpdateAll-" + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "#(initialName)", alterego: "Initial Alterego", description: "Initial description", powers: ["Power1", "Power2"] }
+  When method post
+  Then status 201
+  * def heroId = response.id
+  
+  # Actualizamos todos los campos
+  * def updatedName = "Updated-" + java.util.UUID.randomUUID()
+  Given path '/characters/' + heroId
+  And request { name: "#(updatedName)", alterego: "daycasti Updated", description: "Completely updated description", powers: ["NewPower1", "NewPower2", "NewPower3"] }
+  When method put
+  Then status 200
+  And match response.name == updatedName
+  And match response.alterego == "daycasti Updated"
+  And match response.description == "Completely updated description"
+  And match response.powers contains "NewPower3"
+  And match response.powers.length == 3
+  
+  # Limpiamos
+  Given path '/characters/' + heroId
+  When method delete
+  Then status 204
+
+@Put @validation
+Scenario: Verificar error al actualizar con datos inválidos
+  # Primero creamos un personaje
+  Given path '/characters'
+  And request { name: "ToUpdate-" + java.util.UUID.randomUUID(), alterego: "daycasti", description: "Hero to update", powers: ["Power1"] }
+  When method post
+  Then status 201
+  * def heroId = response.id
+  
+  # Intentamos actualizar con datos inválidos
+  Given path '/characters/' + heroId
+  And request { name: "", alterego: "", description: "", powers: [] }
+  When method put
+  Then status 400
+  
+  # Limpiamos
+  Given path '/characters/' + heroId
+  When method delete
+  Then status 204
+
+@Delete
+Scenario: Verificar que devuleve error cuando elimino un registro que no existe
+  Given path '/characters/1'
+  When method delete
+  Then status 404
+  And match response.error == "Character not found"
+
+@Delete
+Scenario: Verificar que devuleve error cuando elimino un registro con un id invalido
+  Given path '/characters/aaaaa'
+  When method delete
+  Then status 500
+  And match response.error == 'Internal server error'
+  
+@Delete @bulk
+Scenario: Crear y eliminar múltiples personajes consecutivamente
+  # Crear personaje 1
+  * def name1 = "ToDelete1-" + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "#(name1)", alterego: "daycasti", description: "First delete test", powers: ["Delete"] }
+  When method post
+  Then status 201
+  * def id1 = response.id
+  
+  # Crear personaje 2
+  * def name2 = "ToDelete2-" + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "#(name2)", alterego: "daycasti", description: "Second delete test", powers: ["Delete"] }
+  When method post
+  Then status 201
+  * def id2 = response.id
+  
+  # Eliminar personaje 1
+  Given path '/characters/' + id1
+  When method delete
+  Then status 204
+  
+  # Eliminar personaje 2
+  Given path '/characters/' + id2
+  When method delete
+  Then status 204
+  
+  # Verificar que ambos fueron eliminados
+  Given path '/characters/' + id1
+  When method get
+  Then status 404
+  
+  Given path '/characters/' + id2
+  When method get
+  Then status 404
+
+@Patch
+Scenario: Actualizar parcialmente solo los poderes de un personaje
+  # Primero creamos un personaje
+  * def heroName = "PatchTest-" + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "#(heroName)", alterego: "daycasti", description: "Hero for patch test", powers: ["Original Power"] }
+  When method post
+  Then status 201
+  * def heroId = response.id
+  
+  # Actualizamos solo los poderes con PATCH
+  Given path '/characters/' + heroId + '/powers'
+  And request { powers: ["Updated Power 1", "Updated Power 2"] }
+  When method patch
+  Then status 200
+  And match response.name == heroName
+  And match response.powers == ["Updated Power 1", "Updated Power 2"]
+  
+  # Limpiamos
+  Given path '/characters/' + heroId
+  When method delete
+  Then status 204
+  
+@Patch
+Scenario: Error al intentar actualizar poderes con un ID inválido
+  Given path '/characters/aaaa/powers'
+  And request { powers: ["Power1", "Power2"] }
+  When method patch
+  Then status 500
+  And match response.error == 'Internal server error'
+  
+@Patch
+Scenario: Error al intentar actualizar poderes de un personaje que no existe
+  Given path '/characters/9999/powers'
+  And request { powers: ["Power1", "Power2"] }
+  When method patch
+  Then status 404
+  And match response.error == 'Character not found'
+
+@Get @health
+Scenario: Verificar que la API está disponible
+  Given path '/health'
+  When method get
+  Then status 200
+  And match response contains { status: '#string' }
+  
+@Advanced
+Scenario: Flujo completo - Creación, búsqueda, actualización parcial, actualización completa y eliminación
+  # 1. Crear personaje con nombre único
+  * def uniqueName = 'CompleteFlow-' + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "#(uniqueName)", alterego: "daycasti", description: "Initial description", powers: ["Initial Power"] }
+  When method post
+  Then status 201
+  * def heroId = response.id
+  
+  # 2. Buscar por nombre
+  Given path '/characters'
+  And param name = uniqueName
+  When method get
+  Then status 200
+  And match response[0].id == heroId
+  
+  # 3. Actualizar parcialmente (solo poderes)
+  Given path '/characters/' + heroId + '/powers'
+  And request { powers: ["Updated Power 1", "Updated Power 2"] }
+  When method patch
+  Then status 200
+  And match response.powers == ["Updated Power 1", "Updated Power 2"]
+  
+  # 4. Actualizar completamente
+  Given path '/characters/' + heroId
+  And request { name: "#(uniqueName)", alterego: "daycasti updated", description: "Fully updated description", powers: ["Final Power 1", "Final Power 2", "Final Power 3"] }
+  When method put
+  Then status 200
+  And match response.description == "Fully updated description"
+  And match response.powers contains "Final Power 3"
+  
+  # 5. Verificar actualización
+  Given path '/characters/' + heroId
+  When method get
+  Then status 200
+  And match response.alterego == "daycasti updated"
+  
+  # 6. Eliminar personaje
+  Given path '/characters/' + heroId
+  When method delete
+  Then status 204
+  
+  # 7. Verificar eliminación
+  Given path '/characters/' + heroId
+  When method get
+  Then status 404
+
+@Performance
+Scenario: Verificar tiempo de respuesta en operaciones consecutivas
+  # Creamos un personaje y medimos el tiempo
+  * def start = new Date().getTime()
+  
+  * def uniqueName = 'PerformanceTest-' + java.util.UUID.randomUUID()
+  Given path '/characters'
+  And request { name: "#(uniqueName)", alterego: "daycasti", description: "Performance test", powers: ["Speed"] }
+  When method post
+  Then status 201
+  * def heroId = response.id
+  
+  # Hacemos consulta GET y medimos tiempo
+  Given path '/characters/' + heroId
+  When method get
+  Then status 200
+  
+  # Eliminamos el personaje
+  Given path '/characters/' + heroId
+  When method delete
+  Then status 204
+  
+  # Comprobamos que todo el flujo tarda menos de 3 segundos
+  * def end = new Date().getTime()
+  * def totalTime = end - start
+  * print 'Tiempo total de operaciones (ms): ' + totalTime
+  * assert totalTime < 3000
