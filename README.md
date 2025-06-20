@@ -1,6 +1,17 @@
-# Proyecto base de pruebas automatizadas con Karate, Java y Gradle
+# Proyecto de Automatización de Pruebas con Karate, Java y Gradle
 
-Este proyecto es una base para implementar pruebas automatizadas de la colección de peticiones entregadas (por ejemplo, una colección Postman). Todas las pruebas deben ser escritas en el archivo `src/test/resources/karate-test.feature` siguiendo la sintaxis de Karate DSL.
+Este proyecto sirve como una base robusta para la implementación de pruebas automatizadas de APIs, utilizando el framework Karate DSL, Java y Gradle. Está diseñado para facilitar la creación y ejecución de pruebas de integración y regresión para colecciones de peticiones HTTP (similares a las de Postman), asegurando la calidad y el correcto funcionamiento de los servicios.
+
+## ¿Qué se está probando?
+
+Actualmente, este proyecto se enfoca en la automatización de pruebas para la **API de Personajes de Marvel**. Se están probando los siguientes aspectos:
+
+- **Creación de Personajes**: Verificación del endpoint de creación de personajes, asegurando que los datos se persistan correctamente y que las respuestas sean las esperadas.
+- **Obtención de Personajes**: Validación de los endpoints para listar y obtener personajes individuales, incluyendo la estructura de la respuesta, tipos de datos y manejo de casos donde el personaje no existe.
+- **Actualización de Personajes**: Pruebas del endpoint de actualización para asegurar que los cambios se reflejen adecuadamente y que la API maneje correctamente las actualizaciones parciales o completas.
+- **Eliminación de Personajes**: Verificación del proceso de eliminación de personajes, confirmando que los registros se remuevan de la base de datos y que la API responda con los códigos de estado apropiados (ej. 204 No Content para éxito, 404 Not Found para personajes inexistentes).
+
+Las pruebas están organizadas en archivos `.feature` dentro de `src/test/resources/` y cubren diferentes escenarios para cada operación CRUD (Create, Read, Update, Delete) sobre la API de Personajes de Marvel.
 
 ## Instrucciones de uso
 
