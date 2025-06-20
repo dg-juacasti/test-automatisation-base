@@ -75,3 +75,41 @@ Scenario: Error Obtener personaje inexistente debe retornar error 404
     }
     """
 
+Scenario: Obtener personaje existente por ID 3 exitosamente
+  * def characterId = 3
+  * def endpoint = baseUrl + '/' + testUser + '/api/characters/' + characterId
+
+  Given url endpoint
+  When method GET
+  Then status 200
+  And match response ==
+    """
+    {
+      id: 3,
+      name: "Iron Man",
+      alterego: "Tony Stark",
+      description: "Genius billionaire",
+      powers: ["Armor", "Flight"]
+    }
+    """
+  And match response.name == "Iron Man"
+
+
+Scenario: Obtener personaje existente por ID dinamico, valida recien creado
+  * def characterId = characterInfo.id
+   * def endpoint = baseUrl + '/' + testUser + '/api/characters/' + characterId
+
+   Given url endpoint
+   When method GET
+   Then status 200
+   And match response ==
+   """
+     {
+       id: '#number',
+       name: '#(characterInfo.name)',
+       alterego: '#string',
+       description: '#string',
+       powers: '#[]'
+     }
+   """
+   And match response.name == characterInfo.name
