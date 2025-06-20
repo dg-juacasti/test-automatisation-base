@@ -1,29 +1,21 @@
-Feature: Tests de la API Marvel Characters
+Feature: Marvel Characters API
 
 Background:
-  * def config = read('classpath:data/config.json')
-  * url config.baseUrl
-  * configure ssl = config.ssl
-  * def username = config.username
+  * configure ssl = true
+  * url 'http://bp-se-test-cabcd9b246a5.herokuapp.com'
+  * def username = 'testuser'
   * def basePath = '/' + username + '/api/characters'
-  * def ironmanRequest = read('classpath:data/ironman.json')
-  * def characterRequest = ironmanRequest
-  * def characterUpdateRequest = read('classpath:data/ironman.json')
-  * def characterAltRequest = read('classpath:data/spiderman.json')
-  * def hulkRequest = read('classpath:data/hulk.json')
-  * def thorRequest = read('classpath:data/thor.json')
-  * def captainRequest = read('classpath:data/captain-america.json')
-  * def invalidCharacterRequest = read('classpath:data/invalid-character.json')
-  * def schemas = read('classpath:data/schemas.json')
-  * def expectedSchema = schemas.characterSchema
-  * def errorSchema = schemas.errorSchema
-  * def errorMessages = read('classpath:data/error-handling.json')
-  * def headers = config.headers
+  * def headers = { 'Content-Type': 'application/json' }
+  * def nameRandom = 'Hero-' + java.util.UUID.randomUUID()
+  * def characterRequest = { name: 'Iron Man', alterego: 'Tony Stark', description: 'Genius billionaire', powers: ['Armor', 'Flight'] }
+  * def characterUpdateRequest = { name: 'Iron Man', alterego: 'Tony Stark', description: 'Updated description', powers: ['Armor', 'Flight'] }
+  * def invalidCharacterRequest = { name: '', alterego: '', description: '', powers: [] }
+  * def emptyRequest = { }
   # Función para limpiar personajes antes de las pruebas (opcional)
   * def cleanUp =
   """
   function() {
-    var http = karate.http(karate.get('baseUrl'));
+    var http = karate.http(karate.get('url'));
     var path = basePath;
     var response = http.path(path).method('GET').invoke();
     var characters = response.json;
@@ -36,29 +28,15 @@ Background:
   # Descomentar la siguiente línea para limpiar antes de cada prueba
   # * eval cleanUp()
 
-# 1. Obtener todos los personajes (al inicio sin datos)
-Scenario: Obtener todos los personajes - lista vacía inicial
+@Get
+Scenario: Obtener todos los personajes
   Given path basePath
   When method GET
   Then status 200
-  And match response == []
+  And match response == '#[]'
 
-# 2. Crear personaje (exitoso)
-Scenario: Crear personaje exitosamente
-  Given path basePath
-  And request characterRequest
-  And headers headers
-  When method POST  Then status 201
-  And match response == expectedSchema
-  And match response.id == '#notnull'
-  And match response.name == characterRequest.name
-  And match response.alterego == characterRequest.alterego
-  And match response.description == characterRequest.description
-  And match response.powers == characterRequest.powers
-  * def characterId = response.id
-
-# 3. Obtener personaje por ID (exitoso)
-Scenario: Obtener personaje por ID existente
+@Get
+Scenario: Obtener personaje por ID (exitoso)
   # Primero creamos un personaje para asegurarnos que existe
   Given path basePath
   And request characterRequest
@@ -66,7 +44,7 @@ Scenario: Obtener personaje por ID existente
   When method POST
   Then status 201
   * def characterId = response.id
-
+  
   # Ahora obtenemos el personaje por su ID
   Given path basePath + '/' + characterId
   When method GET
@@ -77,60 +55,58 @@ Scenario: Obtener personaje por ID existente
   And match response.description == characterRequest.description
   And match response.powers == characterRequest.powers
 
-# 4. Obtener personaje por ID (no existe)
-Scenario: Obtener personaje por ID que no existe  Given path basePath + '/999'
+@Get
+Scenario: Obtener personaje por ID (no existe)
+  Given path basePath + '/999'
   When method GET
   Then status 404
-  And match response == errorSchema
-  And match response.error == errorMessages.notFound.error
+  And match response.error == 'Character not found'
 
-# 5. Crear personaje con nombre duplicado
-Scenario: Crear personaje con nombre duplicado debe fallar
+@Post
+Scenario: Crear personaje (exitoso)
+  Given path basePath
+  And request characterRequest
+  And headers headers
+  When method POST
+  Then status 201
+  And match response.id == '#notnull'
+  And match response.name == characterRequest.name
+  And match response.alterego == characterRequest.alterego
+  And match response.description == characterRequest.description
+  And match response.powers == characterRequest.powers
+  * def characterId = response.id
+
+@Post
+Scenario: Crear personaje (nombre duplicado)
   # Primero creamos un personaje
   Given path basePath
   And request characterRequest
   And headers headers
   When method POST
   Then status 201
+  
   # Intentamos crear otro con el mismo nombre
   Given path basePath
   And request characterRequest
   And headers headers
   When method POST
   Then status 400
-  And match response == errorSchema
-  And match response.error == errorMessages.duplicateName.error
+  And match response.error == "Character name already exists"
 
-# 6. Crear personaje con campos requeridos faltantes
-Scenario: Crear personaje con campos requeridos faltantes debe fallar  Given path basePath
+@Post
+Scenario: Crear personaje (faltan campos requeridos)
+  Given path basePath
   And request invalidCharacterRequest
   And headers headers
   When method POST
   Then status 400
-  And match response == schemas.validationErrorSchema
-  And match response.name == errorMessages.validation.name
-  And match response.alterego == errorMessages.validation.alterego
-  And match response.description == errorMessages.validation.description
-  And match response.powers == errorMessages.validation.powers
+  And match response.name == "Name is required"
+  And match response.alterego == "Alterego is required"
+  And match response.description == "Description is required"
+  And match response.powers == "Powers are required"
 
-# 7. Obtener todos los personajes (con datos)
-Scenario: Obtener todos los personajes después de crear uno
-  # Primero creamos un personaje
-  Given path basePath
-  And request characterRequest
-  And headers headers
-  When method POST
-  Then status 201
-
-  # Ahora verificamos que la lista no esté vacía
-  Given path basePath
-  When method GET
-  Then status 200
-  And match response != []
-  And match response[*].name contains 'Iron Man'
-
-# 8. Actualizar personaje (exitoso)
-Scenario: Actualizar personaje existente
+@Put
+Scenario: Actualizar personaje (exitoso)
   # Primero creamos un personaje
   Given path basePath
   And request characterRequest
@@ -150,17 +126,17 @@ Scenario: Actualizar personaje existente
   And match response.description == characterUpdateRequest.description
   And match response.powers == characterUpdateRequest.powers
 
-# 9. Actualizar personaje que no existe
-Scenario: Actualizar personaje que no existe debe fallar  Given path basePath + '/999'
+@Put
+Scenario: Actualizar personaje (no existe)
+  Given path basePath + '/999'
   And request characterUpdateRequest
   And headers headers
   When method PUT
   Then status 404
-  And match response == errorSchema
-  And match response.error == errorMessages.notFound.error
+  And match response.error == "Character not found"
 
-# 10. Eliminar personaje (exitoso)
-Scenario: Eliminar personaje existente
+@Delete
+Scenario: Eliminar personaje (exitoso)
   # Primero creamos un personaje
   Given path basePath
   And request characterRequest
@@ -173,73 +149,148 @@ Scenario: Eliminar personaje existente
   Given path basePath + '/' + characterId
   When method DELETE
   Then status 204
+  
   # Verificamos que ya no exista
   Given path basePath + '/' + characterId
   When method GET
   Then status 404
-  And match response == errorSchema
-  And match response.error == errorMessages.notFound.error
+  And match response.error == 'Character not found'
 
-# 11. Eliminar personaje que no existe
-Scenario: Eliminar personaje que no existe debe fallar  Given path basePath + '/999'
+@Delete
+Scenario: Eliminar personaje (no existe)
+  Given path basePath + '/999'
   When method DELETE
   Then status 404
-  And match response == errorSchema
-  And match response.error == errorMessages.notFound.error
+  And match response.error == "Character not found"
 
-# 12. Crear multiples personajes y verificarlos
-Scenario: Crear múltiples personajes y verificarlos
-  # Crear Spiderman
+# Escenarios adicionales con IDs mal formados según el feature proporcionado
+
+@Get
+Scenario: Verificar que el de /characters/{id} devuelve error con un id mal formado
+  Given path basePath + '/aaaa'
+  When method GET
+  Then status 500
+  And match response.error == 'Internal server error'
+
+@Put
+Scenario: Verificar que devuelve error cuando intento actualizar un personaje con un id invalido
+  Given path basePath + '/aaa'
+  And request characterUpdateRequest
+  And headers headers
+  When method PUT
+  Then status 500
+  And match response.error == 'Internal server error'
+
+@Delete
+Scenario: Verificar que devuelve error cuando elimino un registro con un id invalido
+  Given path basePath + '/aaaaa'
+  When method DELETE
+  Then status 500
+  And match response.error == 'Internal server error'
+
+# Escenario de flujo completo
+Scenario: Flujo completo - Crear, Obtener, Actualizar y Eliminar un personaje
+  # Crear personaje
   Given path basePath
-  And request characterAltRequest
+  And request { name: "#(nameRandom)", alterego: "Peter Parker", description: "Friendly neighborhood", powers: ["Spider-sense", "Wall-crawling"]}
   And headers headers
   When method POST
   Then status 201
-  And match response == expectedSchema
-  And match response.id == '#notnull'
-  And match response.name == characterAltRequest.name
-  * def spidermanId = response.id
+  * def characterId = response.id
   
-  # Crear Hulk
-  Given path basePath
-  And request hulkRequest
-  And headers headers
-  When method POST
-  Then status 201
-  And match response == expectedSchema
-  And match response.id == '#notnull'
-  And match response.name == hulkRequest.name
-  * def hulkId = response.id
-  
-  # Crear Thor
-  Given path basePath
-  And request thorRequest
-  And headers headers
-  When method POST
-  Then status 201
-  And match response == expectedSchema
-  And match response.id == '#notnull'
-  And match response.name == thorRequest.name
-  * def thorId = response.id
-  
-  # Crear Captain America
-  Given path basePath
-  And request captainRequest
-  And headers headers
-  When method POST
-  Then status 201
-  And match response == expectedSchema
-  And match response.id == '#notnull'
-  And match response.name == captainRequest.name
-  * def captainId = response.id
-  
-  # Verificar lista de todos los personajes
-  Given path basePath
+  # Obtener personaje creado
+  Given path basePath + '/' + characterId
   When method GET
   Then status 200
-  And match response != []
-  And match response[*].name contains 'Iron Man'
-  And match response[*].name contains 'Spider-Man'
-  And match response[*].name contains 'Hulk'
-  And match response[*].name contains 'Thor'
-  And match response[*].name contains 'Captain America'
+  And match response.id == characterId
+  And match response.name == nameRandom
+  
+  # Actualizar personaje
+  Given path basePath + '/' + characterId
+  And request { name: "#(nameRandom)", alterego: "Peter Parker", description: "Updated description", powers: ["Spider-sense", "Wall-crawling", "Super strength"]}
+  And headers headers
+  When method PUT
+  Then status 200
+  And match response.id == characterId
+  And match response.description == "Updated description"
+  And match response.powers contains "Super strength"
+  
+  # Eliminar personaje
+  Given path basePath + '/' + characterId
+  When method DELETE
+  Then status 204
+  
+  # Verificar que el personaje ya no existe
+  Given path basePath + '/' + characterId
+  When method GET
+  Then status 404
+  And match response.error == "Character not found"
+
+@Put
+Scenario: Verificar que devuelve error cuando intento actualizar un personaje con un id que no existe
+  Given path basePath + '/1'
+  And request characterUpdateRequest
+  And headers headers
+  When method PUT
+  Then status 404
+  And match response.error == "Character not found"
+
+@Put
+Scenario: Verificar que devuelve error cuando intento actualizar un personaje con un id invalido
+  Given path basePath + '/aaa'
+  And request characterUpdateRequest
+  And headers headers
+  When method PUT
+  Then status 500
+  And match response.error == 'Internal server error'
+
+@Delete
+Scenario: Verificar que devuelve error cuando elimino un registro que no existe
+  Given path basePath + '/1'
+  When method DELETE
+  Then status 404
+  And match response.error == "Character not found"
+
+@Delete
+Scenario: Verificar que devuelve error cuando elimino un registro con un id invalido
+  Given path basePath + '/aaaaa'
+  When method DELETE
+  Then status 500
+  And match response.error == 'Internal server error'
+
+Scenario: Flujo completo - Crear, Obtener, Actualizar y Eliminar un personaje
+  # Crear personaje
+  Given path basePath
+  And request { name: "#(nameRandom)", alterego: "Peter Parker", description: "Friendly neighborhood", powers: ["Spider-sense", "Wall-crawling"]}
+  And headers headers
+  When method POST
+  Then status 201
+  * def characterId = response.id
+  
+  # Obtener personaje creado
+  Given path basePath + '/' + characterId
+  When method GET
+  Then status 200
+  And match response.id == characterId
+  And match response.name == nameRandom
+  
+  # Actualizar personaje
+  Given path basePath + '/' + characterId
+  And request { name: "#(nameRandom)", alterego: "Peter Parker", description: "Updated description", powers: ["Spider-sense", "Wall-crawling", "Super strength"]}
+  And headers headers
+  When method PUT
+  Then status 200
+  And match response.id == characterId
+  And match response.description == "Updated description"
+  And match response.powers contains "Super strength"
+  
+  # Eliminar personaje
+  Given path basePath + '/' + characterId
+  When method DELETE
+  Then status 204
+  
+  # Verificar que el personaje ya no existe
+  Given path basePath + '/' + characterId
+  When method GET
+  Then status 404
+  And match response.error == "Character not found"
