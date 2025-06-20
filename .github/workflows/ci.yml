@@ -41,6 +41,5 @@ jobs:
           name: karate-reports-${{ matrix.os }}
           path: |
             build/karate-reports/
-            build/cucumber-html-reports/
             target/
           if-no-files-found: ignore
