@@ -94,3 +94,4 @@ Scenario: Eliminar personaje inexistente (error 404)
   When method DELETE
   Then status 404
   And print
+  
