@@ -7,8 +7,8 @@ class KarateBasicTest {
 
 
     @Karate.Test
-    Karate testAll() {
-        return new Karate().relativeTo(getClass());
+    Karate testBasic() {
+        return Karate.run("src/test/java/features/");
     }
 
 }
