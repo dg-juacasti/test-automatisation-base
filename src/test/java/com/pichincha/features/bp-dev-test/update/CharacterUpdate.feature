@@ -4,7 +4,7 @@ Feature: Actualizacion de datos de personaje
   @id:1 @consultaActualizarPersonaje @jsonData
   Scenario: T-API-HU-0004-CA1- Actualizacion de datos de personaje
     * header content-type = 'application/json'
-    * def base = 'http://bp-se-test-cabcd9b246a5.herokuapp.com/josdrodr/api/characters'
+    * def base = url
     * def bodyJSON = read('classpath:../data/bp-dev-test/update/request_update_character.json')
     * def updatedBodyJSON = read('classpath:../data/bp-dev-test/update/request_update_character_updated.json')
     Given url base
@@ -29,7 +29,7 @@ Feature: Actualizacion de datos de personaje
   Scenario: T-API-HU-0004-CA2- Actualizacion de datos de personaje no existe
     * header content-type = 'application/json'
     * def updatedBodyJSON = read('classpath:../data/bp-dev-test/update/request_update_character_updated.json')
-    Given url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/josdrodr/api/characters/999'
+    Given url url + '/' + notFoundId
     And request updatedBodyJSON
     When method PUT
     Then status 404

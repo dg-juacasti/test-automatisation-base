@@ -4,7 +4,7 @@ Feature: Eliminar personaje
   @id:1 @consultaEliminarPersonajePorId @jsonData
   Scenario: T-API-HU-0005-CA1- Eliminar personaje
     * header content-type = 'application/json'
-    * def base = 'http://bp-se-test-cabcd9b246a5.herokuapp.com/josdrodr/api/characters'
+    * def base = url
     * def bodyJSON = read('classpath:../data/bp-dev-test/delete/request_delete_character.json')
     Given url base
     And request bodyJSON
@@ -23,6 +23,6 @@ Feature: Eliminar personaje
   @id:2 @consultaEliminarPersonajePorIdNoExiste @jsonData
   Scenario: T-API-HU-0005-CA1- Eliminar personaje no existe
     * header content-type = 'application/json'
-    Given url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/josdrodr/api/characters/999'
+    Given url url + '/' + notFoundId
     When method DELETE
     Then status 404

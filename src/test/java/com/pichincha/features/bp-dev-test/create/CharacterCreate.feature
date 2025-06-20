@@ -5,7 +5,7 @@ Feature: Creacion de personajes
   Scenario: T-API-HU-0002-CA1- Consultar creacion de personaje
     * header content-type = 'application/json'
     * def bodyJSON = read('classpath:../data/bp-dev-test/create/request_create_character.json')
-    Given url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/josdrodr/api/characters'
+    Given url url
     And request bodyJSON
     When method POST
     Then status 201
@@ -19,7 +19,7 @@ Feature: Creacion de personajes
    Scenario: T-API-HU-0002-CA2- Consultar creacion de personaje duplicado
      * header content-type = 'application/json'
      * def bodyJSON = read('classpath:../data/bp-dev-test/create/request_create_character_duplicated.json')
-     Given url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/josdrodr/api/characters'
+     Given url url
      And request bodyJSON
      When method POST
      Then status 201
@@ -37,7 +37,7 @@ Feature: Creacion de personajes
   Scenario: T-API-HU-0002-CA3- Consultar creacion de personaje con parametros faltantes
     * header content-type = 'application/json'
     * def bodyJSON = read('classpath:../data/bp-dev-test/create/request_create_character_missing_fields.json')
-    Given url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/josdrodr/api/characters'
+    Given url url
     And request bodyJSON
     When method POST
     Then status 400

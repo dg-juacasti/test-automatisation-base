@@ -3,7 +3,7 @@ Feature: Listado de Personajes
 
   @id:1 @consultaListaDePersonajes
   Scenario: T-API-HU-0001-CA1- Consultar listado de todos los personajes
-    Given url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/josdrodr/api/characters'
+    Given url url
     When method GET
     Then status 200
     * print response

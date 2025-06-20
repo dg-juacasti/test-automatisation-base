@@ -37,6 +37,7 @@ public class TestRunner {
 
         String karateOutputPath = "build/karate-reports";
         generateReport(karateOutputPath);
+        assertTrue("There are failed scenarios", results.getFailCount() == 0);
     }
 
     public static void generateReport(String karateOutputPath) throws IOException {
