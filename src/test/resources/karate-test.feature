@@ -1,4 +1,5 @@
-Feature: Test de API súper simple
+@EvaluacionAPI
+Feature: Evaluación API SUPER SIMPLE
 
   Background:
     * configure ssl = true
