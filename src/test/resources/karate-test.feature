@@ -28,6 +28,9 @@ Feature: Test de API de marvel characters
     And match response.alterego == 'Peter Parker'
     And match response.description == 'Superhéroe arácnido de Marvel'
     And match response.powers == ["Agilidad", "Sentido arácnido", "Trepar muros"]
+    # Guardar los datos del personaje creado usando la función del karate-config
+    * saveCharacterData(response)
+    * print 'Character saved globally with ID:', response.id
 
 
   @id:3 @CrearPersonajeCasoInvalido
@@ -70,11 +73,18 @@ Feature: Test de API de marvel characters
 
   @id:5 @ObtenerPersonajePorID
   Scenario: T-API-BIL-1-CA5-Obtener el personaje por id
+    # Obtener los datos del personaje guardado previamente
+    * def savedCharacter = getCharacterData()
+    * print 'Retrieved saved character:', savedCharacter
+    * def idPersonaje = savedCharacter.id
     * def path = '/api/characters/' + idPersonaje
     Given url baseUrl + path
     When method get
     Then status 200
     * print response
+    # Verificar que los datos coinciden con los guardados
+    And match response.id == savedCharacter.id
+    And match response.name == savedCharacter.name
 
   @id:6 @ObtenerPersonajeNoExiste
   Scenario: T-API-BIL-1-CA6-Obtener el personaje por id (no existe)
@@ -88,26 +98,32 @@ Feature: Test de API de marvel characters
 
   @id:7 @ActualizarPersonajeExitoso
   Scenario: T-API-BIL-1-CA7-Actualizar personaje con caso exito
+    # Obtener los datos del personaje guardado previamente
+    * def savedCharacter = getCharacterData()
+    * print 'Updating character with ID:', savedCharacter.id
+    * def idPersonaje = savedCharacter.id
     * def path = '/api/characters'
-    * def idPersonaje = 1
     * header Content-Type = 'application/json'
     Given url baseUrl + path + '/' + idPersonaje
     And request
      """
       {
-        "name": "Super Banco Pichincha 1",
+        "name": "Super Banco Pichincha Updated",
         "alterego": "Super Banco",
-        "description": "Dev full stack",
-        "powers": ["Angular"]
+        "description": "Dev full stack updated",
+        "powers": ["Angular", "Karate Testing"]
       }
       """
     When method PUT
     Then status 200
     * print response
     And match response.id == idPersonaje
-    And match response.description ==  'Dev full stack'
+    And match response.description ==  'Dev full stack updated'
     And match response.powers contains 'Angular'
+    And match response.powers contains 'Karate Testing'
     And match response.alterego == 'Super Banco'
+    # Actualizar los datos guardados con la nueva información
+    * saveCharacterData(response)
 
   @id:8 @ActualizarPersonajeNoExiste
   Scenario: T-API-BIL-1-CA8-Actualizar personaje (no existe)
@@ -131,10 +147,27 @@ Feature: Test de API de marvel characters
 
 
   @id:9 @EliminarPersonajeExitoso
-  Scenario: T-API-BIL-1-CA8-Eliminar personaje exitosamente
-    * def idPersonaje = 1
+  Scenario: T-API-BIL-1-CA9-Eliminar personaje exitosamente
+    # Obtener los datos del personaje guardado previamente
+    * def savedCharacter = getCharacterData()
+    * print 'Deleting character with ID:', savedCharacter.id
+    * def idPersonaje = savedCharacter.id
     * def path = '/api/characters/' + idPersonaje
     Given url baseUrl + path
     When method DELETE
     Then status 204
+    * print response
+    # Limpiar los datos guardados después de eliminar
+    * clearCharacterData()
+    * print 'Character data cleared after deletion'
+
+
+
+  @id:10 @EliminarPersonajeNoExie
+  Scenario: T-API-BIL-1-CA10-Eliminar personaje no existente
+    # Obtener los datos del personaje guardado previamente
+    * def path = '/api/characters/' + '999999'
+    Given url baseUrl + path
+    When method DELETE
+    Then status 404
     * print response
