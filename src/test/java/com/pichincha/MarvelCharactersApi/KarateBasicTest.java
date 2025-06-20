@@ -12,7 +12,7 @@ class KarateBasicTest {
 //        return Karate.run("classpath:karate-test.feature");
 //        return Karate.run("get-characters").relativeTo(getClass());
 //        return Karate.run("classpath:MarvelCharactersApi/MCGetCharacters.feature");
-        return Karate.run("classpath:MarvelCharactersApi/MCGetCharactersSimple.feature");
+        return Karate.run("classpath:MarvelCharactersApi/MCGetCharacters.feature");
     }
 
 }
