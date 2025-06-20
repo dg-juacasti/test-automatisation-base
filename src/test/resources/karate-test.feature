@@ -61,3 +61,12 @@ Feature: Evaluación API SUPER SIMPLE
         When method PUT
         Then status 200
         And print response
+
+    @id:8 @ActualizarDatosPersonajeNoExiste
+    Scenario: T-API-001-CA08- Actualizar datos de personaje no existe
+        Given url base_url + '/testuser/api/characters/999'
+        And def personajeJson = read('classpath:../personaje.json')
+        And request personajeJson
+        When method PUT
+        Then status 404
+        And print response
