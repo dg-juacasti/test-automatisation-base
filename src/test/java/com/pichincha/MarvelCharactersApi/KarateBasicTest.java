@@ -11,8 +11,8 @@ class KarateBasicTest {
 //        return Karate.run().relativeTo(getClass());
 //        return Karate.run("classpath:karate-test.feature");
 //        return Karate.run("get-characters").relativeTo(getClass());
-//        return Karate.run("classpath:MarvelCharactersApi/MCGetCharacters.feature");
-        return Karate.run("classpath:MarvelCharactersApi/MCGetCharacters.feature");
+//        return Karate.run("classpath:MarvelCharactersApi/MCGetCharacters.feature"); //OK
+        return Karate.run("classpath:MarvelCharactersApi/MCPostNewCharacter.feature");
     }
 
 }
