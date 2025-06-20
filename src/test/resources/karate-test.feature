@@ -76,10 +76,34 @@ Feature: Test de API de marvel characters
     * print response
 
   @id:6 @ObtenerPersonajeNoExiste
-  Scenario: T-API-BIL-1-CA5-Obtener el personaje por id (no existe)
+  Scenario: T-API-BIL-1-CA6-Obtener el personaje por id (no existe)
     * def idPersonaje = 9999
     * def path = '/arevelo/api/characters/' + idPersonaje
     Given url baseUrl + path
     When method get
     Then status 404
     * print response
+
+
+  @id:7 @ActualizarPersonajeExitoso
+  Scenario: T-API-BIL-1-CA7-Actualizar personaje con caso exito
+    * def path = '/arevelo/api/characters'
+    * def idPersonaje = 1
+    * header Content-Type = 'application/json'
+    Given url baseUrl + path + '/' + idPersonaje
+    And request
+     """
+      {
+        "name": "Super Banco Pichincha 1",
+        "alterego": "Super Banco",
+        "description": "Dev full stack",
+        "powers": ["Angular"]
+      }
+      """
+    When method PUT
+    Then status 200
+    * print response
+    And match response.id == idPersonaje
+    And match response.description ==  'Dev full stack'
+    And match response.powers contains 'Angular'
+    And match response.alterego == 'Super Banco'
