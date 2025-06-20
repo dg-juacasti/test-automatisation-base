@@ -66,11 +66,20 @@ Feature: Test de API de marvel characters
     And match response.alterego == 'Alterego is required'
 
 
-  @id:4 @ObtenerPersonarPorID
-  Scenario: T-API-BIL-1-CA3-Obtener el personaje por id
+  @id:5 @ObtenerPersonajePorID
+  Scenario: T-API-BIL-1-CA5-Obtener el personaje por id
     * def idPersonaje = 1
     * def path = '/arevelo/api/characters/' + idPersonaje
     Given url baseUrl + path
     When method get
     Then status 200
+    * print response
+
+  @id:6 @ObtenerPersonajeNoExiste
+  Scenario: T-API-BIL-1-CA5-Obtener el personaje por id (no existe)
+    * def idPersonaje = 9999
+    * def path = '/arevelo/api/characters/' + idPersonaje
+    Given url baseUrl + path
+    When method get
+    Then status 404
     * print response
