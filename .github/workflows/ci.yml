@@ -44,4 +44,3 @@ jobs:
             build/cucumber-html-reports/
             target/
           if-no-files-found: ignore
-
