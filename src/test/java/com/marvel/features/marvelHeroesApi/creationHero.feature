@@ -3,7 +3,6 @@ Feature: HU-0002 Marvel Characters Creation (microservicio para creación de per
 
   Background:
     * url port_marvel_characters_api
-    * path '/characters'
     * def generarHeaders =
       """
       function() {
@@ -23,6 +22,7 @@ Feature: HU-0002 Marvel Characters Creation (microservicio para creación de per
 
   @id:1 @createCharacter @solicitudExitosa201
   Scenario: T-API-HU-0002-CA01-Crear personaje exitosamente 201 - karate
+    Given path '/characters'
     * def jsonData = read('classpath:data/marvel_characters_api/request_create_character.json')
     * jsonData.name += '_' + getCurrentTimestamp() 
     And request jsonData
@@ -33,6 +33,7 @@ Feature: HU-0002 Marvel Characters Creation (microservicio para creación de per
   @id:2 @createCharacter @errorDuplicado400
   Scenario: T-API-HU-0002-CA02-Crear personaje con nombre duplicado 400 - karate
     # Primero creamos un personaje
+    Given path '/characters'
     * def jsonData = read('classpath:data/marvel_characters_api/request_create_character_duplicate.json')
     * jsonData.name += '_' + getCurrentTimestamp() 
     And request jsonData
@@ -40,6 +41,10 @@ Feature: HU-0002 Marvel Characters Creation (microservicio para creación de per
     Then status 201
     
     # Intentamos crear otro con el mismo nombre
+    Given path '/characters'
+    * jsonData.alterego = 'Otro'
+    * jsonData.description = 'Otro'
+    * jsonData.powers = ['Otro']
     And request jsonData
     When method post
     Then status 400
@@ -48,6 +53,7 @@ Feature: HU-0002 Marvel Characters Creation (microservicio para creación de per
 
   @id:3 @createCharacter @errorValidacion400
   Scenario: T-API-HU-0002-CA03-Crear personaje con campos requeridos faltantes 400 - karate
+    Given path '/characters'
     * def jsonData = read('classpath:data/marvel_characters_api/request_create_character_empty.json')
     And request jsonData
     When method post

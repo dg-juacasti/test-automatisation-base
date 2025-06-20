@@ -23,7 +23,7 @@ Feature: HU-0003 Marvel Characters Update (microservicio para actualización de 
   @id:1 @updateCharacter @solicitudExitosa200
   Scenario: T-API-HU-0003-CA01-Actualizar personaje exitosamente 200 - karate
     # Primero creamos un personaje
-    * path '/characters'
+    Given path '/characters'
     * def createCharacterRequest = read('classpath:data/marvel_characters_api/request_create_character.json')
     * createCharacterRequest.name += '_' + getCurrentTimestamp()
     And request createCharacterRequest
@@ -32,7 +32,7 @@ Feature: HU-0003 Marvel Characters Update (microservicio para actualización de 
     * def characterId = response.id
     
     # Ahora actualizamos el personaje
-    * path '/characters/', characterId
+    Given path '/characters/', characterId
     * def updateCharacterRequest = read('classpath:data/marvel_characters_api/request_update_character.json')
     And request updateCharacterRequest
     When method put
@@ -42,7 +42,7 @@ Feature: HU-0003 Marvel Characters Update (microservicio para actualización de 
 
   @id:2 @updateCharacter @solicitudNoEncontrado404
   Scenario: T-API-HU-0003-CA02-Actualizar personaje inexistente 404 - karate
-    * path '/characters/999999'
+    Given path '/characters/999999'
     * def updateCharacterRequest = read('classpath:data/marvel_characters_api/request_update_character.json')
     And request updateCharacterRequest
     When method put

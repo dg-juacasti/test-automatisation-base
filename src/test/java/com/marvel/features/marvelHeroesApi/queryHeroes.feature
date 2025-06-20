@@ -22,7 +22,7 @@ Feature: HU-0001 Marvel Characters Query (microservicio para consulta de persona
 
     @id:1 @getCharacters @solicitudExitosa200
     Scenario: T-API-HU-0001-CA01-Obtener todos los personajes 200 - karate
-      * path '/characters'
+      Given path '/characters'
       When method get
       Then status 200
       And match response == '#array'
@@ -30,7 +30,7 @@ Feature: HU-0001 Marvel Characters Query (microservicio para consulta de persona
     @id:2 @getCharacterById @solicitudExitosa200
     Scenario: T-API-HU-0001-CA02-Obtener personaje por ID 200 - karate
       # Primero creamos un personaje para asegurarnos que exista
-      * path '/characters'
+      Given path '/characters'
       * def createCharacterRequest = read('classpath:data/marvel_characters_api/request_create_character_spiderman.json')
       * createCharacterRequest.name += '_' + getCurrentTimestamp() 
       And request createCharacterRequest
@@ -39,7 +39,7 @@ Feature: HU-0001 Marvel Characters Query (microservicio para consulta de persona
       * def characterId = response.id
     
       # Ahora obtenemos el personaje por ID
-      * path '/characters/', characterId
+      Given path '/characters/', characterId
       When method get
       Then status 200
       And match response.id == characterId
@@ -47,7 +47,7 @@ Feature: HU-0001 Marvel Characters Query (microservicio para consulta de persona
       
     @id:3 @getCharacterById @solicitudNoEncontrado404
     Scenario: T-API-HU-0001-CA03-Obtener personaje por ID inexistente 404 - karate
-      * path '/characters/999999999'
+      Given path '/characters/999999999'
       When method get
       Then status 404
       And match response.error == 'Character not found'
