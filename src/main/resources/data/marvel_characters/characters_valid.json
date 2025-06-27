@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Iron Man",
+    "alterego": "Tony Stark",
+    "description": "Genius billionaire",
+    "powers": ["Armor", "Flight"]
+  },
+  {
+    "name": "Spider-Man",
+    "alterego": "Peter Parker",
+    "description": "Superhéroe arácnido de Marvel",
+    "powers": ["Agilidad", "Sentido arácnido", "Trepar muros"]
+  },
+  {
+    "name": "Black Panther",
+    "alterego": "T'Challa",
+    "description": "Rey de Wakanda y superhéroe",
+    "powers": ["Fuerza sobrehumana", "Agilidad", "Sentidos agudizados"]
+  },
+  {
+    "name": "Hulk",
+    "alterego": "Bruce Banner",
+    "description": "Gigante verde con fuerza descomunal",
+    "powers": ["Fuerza sobrehumana", "Regeneración", "Resistencia"]
+  }
+]
+
