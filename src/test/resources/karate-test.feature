@@ -1,7 +1,7 @@
 Feature: Marvel Characters API Tests
 
   Background:
-    * url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/testuser/api/characters'
+    * url 'http://localhost:8080/testuser/api'
     * def characterPayload =
       """
       {
@@ -13,7 +13,7 @@ Feature: Marvel Characters API Tests
       """
 
   Scenario: 1.0 - Get all characters and expect an empty list
-    Given path ''
+    Given path 'characters'
     When method GET
     Then status 200
     And match response == []
