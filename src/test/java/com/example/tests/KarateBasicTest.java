@@ -1,3 +1,5 @@
+package com.example.tests;
+
 import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
 import net.masterthought.cucumber.Configuration;
@@ -39,10 +41,10 @@ class KarateBasicTest {
     }
     
     @Test
-    void testKarateFeatures() {
-        logger.info("Ejecutando pruebas de Karate...");
+    void testMarvelCharactersAPI() {
+        logger.info("Ejecutando pruebas completas de Marvel Characters API...");
         
-        // Ejecutar las pruebas de Karate
+        // Ejecutar todas las pruebas del archivo karate-test.feature
         Results results = Runner.path("classpath:karate-test.feature")
                 .outputCucumberJson(true)
                 .outputJunitXml(true)
@@ -50,9 +52,13 @@ class KarateBasicTest {
                 .reportDir(KARATE_OUTPUT_PATH)
                 .parallel(1);
         
-        logger.info("Pruebas ejecutadas. Escenarios ejecutados: " + results.getScenariosTotal());
+        logger.info("Pruebas ejecutadas. Escenarios totales: " + results.getScenariosTotal());
         logger.info("Escenarios exitosos: " + (results.getScenariosTotal() - results.getFailCount()));
         logger.info("Escenarios fallidos: " + results.getFailCount());
+        
+        if (results.getFailCount() > 0) {
+            logger.severe("Algunas pruebas fallaron. Revisar el reporte en: " + KARATE_OUTPUT_PATH);
+        }
         
         // Generar reporte de Cucumber
         generateCucumberReport();
